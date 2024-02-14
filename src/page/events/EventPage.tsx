@@ -77,7 +77,7 @@ function EventPage() {
                     y: 100                }
                 }
                 animate={{ y: 0 }}
-                transition={{ duration: 0.5 , ease: "easeIn" }}
+                transition={{ duration: 0.3, ease: "easeIn" }}
                 className="flex flex-col min-h-[100px] shadow-lg p-3">
                 <h3 className="font-medium text-[17px] mb-2">Активные событии</h3>
                 <div className="flex flex-wrap gap-4 mx-1">
@@ -94,7 +94,7 @@ function EventPage() {
                     y: 100                }
                 }
                 animate={{ y: 0 }}
-                transition={{ duration: 1 , ease: "easeIn" }}
+                transition={{ duration: 0.6, ease: "easeIn" }}
                 className="flex min-h-[100px] flex-col shadow-lg p-3">
                 <h3 className="font-medium text-[17px] mb-2">На регистрацию</h3>
                 <div className="flex flex-wrap gap-4 mx-1">
@@ -121,7 +121,7 @@ function EventPage() {
                     y: 100                }
                 }
                 animate={{ y: 0 }}
-                transition={{ duration: 1.2 , ease: "easeIn" }}
+                transition={{ duration: 0.8, ease: "easeIn" }}
                 onClick={() => setOpenAdd(true)}
                 className="bg-red-500 w-[120px] focus:outline-0 active:outline-0 outline-0 font-normal text-white py-3 mt-5 rounded-xl">Добавить
             </motion.button>
