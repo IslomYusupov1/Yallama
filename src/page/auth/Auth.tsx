@@ -5,10 +5,12 @@ import { useDispatch } from "react-redux";
 import {setRefreshToken, setToken} from "@/reducers/AuthReducer";
 import {useState} from "react";
 import {ReloadIcon} from "@radix-ui/react-icons";
+import {useToast} from "@/components/ui/use-toast";
 
 function Auth() {
     const { EventsApi }  = useEventsApiContext();
     const dispatch = useDispatch();
+    const { toast } = useToast()
     const [loading, setLoading] = useState(false);
 
     const authSubmit = (values: FormikValues) => {
@@ -20,7 +22,8 @@ function Auth() {
             setLoading(false)
             dispatch(setToken({ token: x.accessToken }));
             dispatch(setRefreshToken({ refreshToken: x.refreshToken }));
-        }).catch(() => {
+        }).catch((error) => {
+            toast({ title: error?.data })
             setLoading(false)
         })
     }

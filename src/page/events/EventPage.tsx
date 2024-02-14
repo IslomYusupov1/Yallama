@@ -5,10 +5,12 @@ import {useIsMountHook} from "@/hooks/useIsMountHook";
 import ShowDetailsModal from "@/page/events/ShowDetailsModal";
 import AddModal from "@/page/events/AddModal";
 import { motion } from "framer-motion";
+import {useToast} from "@/components/ui/use-toast";
 
 function EventPage() {
     const {EventsApi} = useEventsApiContext();
     const isMount = useIsMountHook();
+    const { toast } = useToast()
 
     const [data, setData] = useState<SessionPromiseData[] | []>([]);
     const [dataNew, setDataNew] = useState<SessionPromiseData[] | []>([]);
@@ -28,7 +30,11 @@ function EventPage() {
                     setOpen(true);
                     setLoadingDetails(false)
                 }
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoadingDetails(false)
         })
     }
@@ -51,8 +57,12 @@ function EventPage() {
             if (isMount.current) {
                 setDataNew(res.data)
             }
-        }).catch(() => {
+        }).catch((error) => {
             setLoading(false)
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
         })
     }, [EventsApi, isMount])
 
@@ -65,8 +75,12 @@ function EventPage() {
             if (isMount.current) {
                 setData(res.data)
             }
-        }).catch(() => {
-            setLoading1(false)
+        }).catch((error) => {
+            setLoading1(false);
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
         })
     }, [EventsApi, isMount])
 

@@ -53,6 +53,7 @@ function RootContainer() {
                     </MainLayout>
                 </BrowserRouter> :
                 <BrowserRouter>
+                    <Toaster/>
                     <Navigate replace={true} to={RoutesEnum.Auth} />
                     <Routes>
                         <Route path={RoutesEnum.Auth} element={<Auth />} />

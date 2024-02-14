@@ -44,12 +44,20 @@ function Services() {
             EventsApi.getAllServices(Number(limit)).then((res) => {
                 setData(res.data);
                 setLoading(false)
-            }).catch(() => {
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
                 setLoading(false)
             })
             setLoadingCreate(false)
             setOpen(false)
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoadingCreate(false)
         })
     }, [EventsApi, selectedData, toast, limit])
@@ -70,7 +78,11 @@ function Services() {
             EventsApi.getAllServices(Number(limit)).then((res) => {
                 setData(res.data);
                 setLoading(false)
-            }).catch(() => {
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
                 setLoading(false)
             })
             setLoadingCreate(false)
@@ -79,7 +91,11 @@ function Services() {
                 title: "Успешно удален",
                 // description: "Friday, February 10, 2023 at 5:57 PM",
             })
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoadingCreate(false)
         })
     }, [EventsApi, toast, limit])
@@ -94,11 +110,18 @@ function Services() {
             EventsApi.getAllServices(Number(limit)).then((res) => {
                 setData(res.data);
                 setLoading(false)
-            }).catch(() => {
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
                 setLoading(false)
             })
-        }).catch(() => {
-
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
         })
     }, [EventsApi, toast, limit]);
 
@@ -107,7 +130,11 @@ function Services() {
         EventsApi.getAllServices(Number(limit)).then((res) => {
             setData(res.data);
             setLoading(false)
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoading(false)
         })
     }, [EventsApi, limit])

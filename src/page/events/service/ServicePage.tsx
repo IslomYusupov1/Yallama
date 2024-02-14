@@ -54,6 +54,11 @@ function ServicePage() {
                     title: "Успешно принято",
                     // description: "Friday, February 10, 2023 at 5:57 PM",
                 })
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
             })
         })
     }, [EventsApi, searchParams, toast])
@@ -72,9 +77,17 @@ function ServicePage() {
             })
             EventsApi.getEventSessionServicesTotalPrice(searchParams?.get("id") as string).then(res => {
                 setTotalPrice(res.totalPrice)
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
             })
-        }).catch(() => {
-
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
         })
     }, [EventsApi, searchParams, toast])
 
@@ -103,7 +116,11 @@ function ServicePage() {
             EventsApi.getEventSessionServicesTotalPrice(searchParams?.get("id") as string).then(res => {
                 setTotalPrice(res.totalPrice)
             })
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoadingCreate(false)
         })
     }, [EventsApi, searchParams, closeFunc, toast])
@@ -132,7 +149,11 @@ function ServicePage() {
             EventsApi.getEventSessionServicesTotalPrice(searchParams?.get("id") as string).then(res => {
                 setTotalPrice(res.totalPrice)
             })
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoadingCreate(false)
         })
     }, [EventsApi, searchParams, closeFunc, toast, selectedData])
@@ -145,6 +166,11 @@ function ServicePage() {
         if (open) {
            EventsApi.getAllServices(100).then((res) => {
             setServices(res.data)
+           }).catch((error) => {
+               toast({
+                   title: error.data,
+                   // description: "Friday, February 10, 2023 at 5:57 PM",
+               })
            })
         }
     }, [EventsApi, open])
@@ -159,6 +185,11 @@ function ServicePage() {
             })
             EventsApi.getEventSessionServicesTotalPrice(searchParams?.get("id") as string).then(res => {
                 setTotalPrice(res.totalPrice)
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                })
             })
         }
     }, [searchParams, EventsApi])

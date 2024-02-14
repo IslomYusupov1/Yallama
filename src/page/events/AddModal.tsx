@@ -39,14 +39,28 @@ export default memo(function AddModal({open, close, setNewData}: Props) {
                            }).then((res) => {
                                setLoading(false)
                                    setNewData(res.data)
-                           }).catch(() => {
+                           }).catch((error) => {
+                               toast({
+                                   title: error.data,
+                                   // description: "Friday, February 10, 2023 at 5:57 PM",
+                               })
                                setLoading(false)
+                           })
+                       }).catch((error) => {
+                           setLoading(false)
+                           toast({
+                               title: error.data,
+                               // description: "Friday, February 10, 2023 at 5:57 PM",
                            })
                        })
                     }
                 })
             }
-        }).catch(() => {
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
             setLoading(false)
         })
     }
