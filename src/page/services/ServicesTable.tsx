@@ -13,16 +13,16 @@ export default memo(function ServiceTable({ data, deleteItem, openEdit }: Props)
     return (
         <table className="border-spacing-2 text-[15px] table-auto w-full overflow-auto border border-slate-500 mt-5 bg-[#f5f6f7]">
             <thead>
-            <tr className="">
-                <th className="text-start py-1 px-2 border border-slate-300">Название</th>
-                <th align="center" className="py-1 px-2 border border-slate-300">Цена</th>
-                <th className="text-center py-1 px-2 border border-slate-300">Приоритет</th>
-                <th className="text-center py-1 px-2 border border-slate-300">unitItem</th>
-                <th className="text-center py-1 px-2 border border-slate-300">unitTime</th>
-                <th className="text-center py-1 px-2 border border-slate-300">unitVolume</th>
-                <th className="text-center py-1 px-2 border border-slate-300">unitWeight</th>
-                <th className="text-center py-1 px-2 border border-slate-300">Действие</th>
-            </tr>
+               <tr className="">
+                   <th className="text-start py-1 px-2 border border-slate-300">Название</th>
+                   <th align="center" className="py-1 px-2 border border-slate-300">Цена</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Приоритет</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">unitItem</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">unitTime</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">unitVolume</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">unitWeight</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Действие</th>
+               </tr>
             </thead>
             <tbody>
             {data?.map((items) => <tr key={items.id}>
