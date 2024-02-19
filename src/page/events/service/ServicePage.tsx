@@ -237,7 +237,7 @@ function ServicePage() {
                     <ServiceEventTable openEdit={openEdit} data={data} deleteItem={deleteItem} totalPrice={totalPrice}
                                        tookFunc={tookFunc}/>
                 </div> : <span className="" />}
-                {(tokenInfo?.role !== RolesEnum.WAREHOUSE_MANAGER && tokenInfo?.role !== RolesEnum.OPERATOR) && <div className="w-full text-end items-end flex justify-end mt-3">
+                {data?.length > 0 && (tokenInfo?.role !== RolesEnum.WAREHOUSE_MANAGER && tokenInfo?.role !== RolesEnum.OPERATOR) && <div className="w-full text-end items-end flex justify-end mt-3">
                     {payedCheck ? <button onClick={payToSessions} disabled={payBtnCheck || loadingCreate}
                                           className="bg-red-600 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed px-8 py-2 rounded-sm text-white">Оплата</button> :
                         <span className="bg-teal-500 px-8 py-2 rounded-sm text-white">Оплачено</span>}
