@@ -43,7 +43,7 @@ export default memo(function ShowDetailsModal({ open, close, data, plate }: Prop
                     </div>
                 </div>
                 <DialogFooter className="">
-                    <button type="submit" onClick={() => navigate(RoutesEnum.EventService + `?id=${data?.id}`)} className="bg-red-500 text-[14px] text-white py-2 px-8 rounded-l">Добавить услугу</button>
+                    <button type="submit" onClick={() => navigate(RoutesEnum.EventService + `?id=${data?.id}`)} className="bg-red-500 text-[14px] text-white py-2 px-8 rounded-l">Перейти к услугам</button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

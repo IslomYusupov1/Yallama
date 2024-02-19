@@ -29,7 +29,8 @@ function ServicePage() {
     const tokenInfo = token && (jwt_decode(token ? token : "") as any);
 
     const payBtnCheck =  useMemo(() => Boolean(data?.find(x => x.tookDate === null)), [data]);
-    const payedCheck =  useMemo(() => Boolean(data?.find(x => x.tookDate === null)), [data]);
+    const payedCheck =  useMemo(() => Boolean(data?.find(x => !x.isPaid)), [data]);
+
     const closeFunc = useCallback(() => {
         setOpen(false);
         setSelectedData({})
@@ -162,6 +163,33 @@ function ServicePage() {
         setOpen(true);
     }, [])
 
+    const payToSessions = () => {
+        setLoadingCreate(true);
+        EventsApi.payToServices(searchParams?.get("id") as string).then(() => {
+            setLoadingCreate(false);
+            toast({
+                title: "Успешно оплачено",
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
+            setLoadingCreate(false);
+            EventsApi.getEventSessionServices({
+                limit: -1,
+                sessionId: searchParams?.get("id") as string
+            }).then(res => {
+                setData(res.data)
+            })
+            EventsApi.getEventSessionServicesTotalPrice(searchParams?.get("id") as string).then(res => {
+                setTotalPrice(res.totalPrice)
+            });
+        }).catch((error) => {
+            setLoadingCreate(false);
+            toast({
+                title: error.data,
+                // description: "Friday, February 10, 2023 at 5:57 PM",
+            })
+        })
+    }
+
     useEffect(() => {
         if (open) {
            EventsApi.getAllServices(100).then((res) => {
@@ -200,16 +228,17 @@ function ServicePage() {
                 <span className="mx-2">Назад</span>
             </button>
             <div className="mt-4">
-                <button onClick={() => setOpen(true)} className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                {tokenInfo?.role !== RolesEnum.ACCOUNTANT && <button onClick={() => setOpen(true)}
+                         className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                     <span className="mx-2">Добавить</span>
                     <PlusIcon className="absolute right-2 h-5 w-5"/>
-                </button>
+                </button>}
                 {data?.length > 0 ? <div className="overflow-auto">
                     <ServiceEventTable openEdit={openEdit} data={data} deleteItem={deleteItem} totalPrice={totalPrice}
                                        tookFunc={tookFunc}/>
                 </div> : <span className="" />}
                 {(tokenInfo?.role !== RolesEnum.WAREHOUSE_MANAGER && tokenInfo?.role !== RolesEnum.OPERATOR) && <div className="w-full text-end items-end flex justify-end mt-3">
-                    {payedCheck ? <button disabled={payBtnCheck}
+                    {payedCheck ? <button onClick={payToSessions} disabled={payBtnCheck || loadingCreate}
                                           className="bg-red-600 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed px-8 py-2 rounded-sm text-white">Оплата</button> :
                         <span className="bg-teal-500 px-8 py-2 rounded-sm text-white">Оплачено</span>}
                 </div>}

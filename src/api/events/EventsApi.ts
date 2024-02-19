@@ -16,6 +16,9 @@ export class EventsApi extends BaseApi {
   public getEventDetails(id: string): Promise<SessionPromiseData> {
     return this.get(`sessions/${id}`);
   }
+  public payToServices(id: string) {
+    return this.post(`sessions/${id}/pay`);
+  }
   public createPlate(json : { plateNumber: string }): Promise<{id: string}> {
     return this.post(`vehicles`, { json: json })
   }
