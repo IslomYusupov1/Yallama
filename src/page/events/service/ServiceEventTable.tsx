@@ -32,7 +32,7 @@ export default memo(function ServiceEventTable({ data, deleteItem, totalPrice, t
                     <th className="text-center py-1 px-2 border border-slate-300">Обьем</th>
                     <th className="text-center py-1 px-2 border border-slate-300">Вес</th>
                     <th className="text-center py-1 px-2 border border-slate-300">Сумма</th>
-                    <th className="text-center py-1 px-2 border border-slate-300">Took</th>
+                    <th className="text-center py-1 px-2 border border-slate-300">Услуга предоставлена</th>
                     {tokenInfo?.role !== RolesEnum.ACCOUNTANT && <th className="text-center py-1 px-2 border border-slate-300">Действие</th>}
                 </tr>
             </thead>
@@ -50,7 +50,9 @@ export default memo(function ServiceEventTable({ data, deleteItem, totalPrice, t
                 <td align="right" width={100} className="py-1 px-2 border border-slate-300">{items?.totalPrice.toLocaleString("ru")}</td>
                 <td align="center" className="py-1 px-2 border border-slate-300">
                     {items?.tookDate ? <CheckIcon className="bg-teal-500 text-white h-4 w-4"/> :
-                        <button disabled={tokenInfo?.role === RolesEnum.ACCOUNTANT} className="bg-red-600 cursor-pointer px-2 py-1 rounded-sm text-white" onClick={() => tookFunc(items?.id)}>Took</button>}
+                        <button disabled={tokenInfo?.role === RolesEnum.ACCOUNTANT}
+                                className="bg-red-600 cursor-pointer px-2 py-1 rounded-sm text-white"
+                                onClick={() => tookFunc(items?.id)}>Взять</button>}
                 </td>
                 {tokenInfo?.role !== RolesEnum.ACCOUNTANT && <td align="center" className="py-1 px-2 border border-slate-300">
                     <div className="flex justify-center gap-4">

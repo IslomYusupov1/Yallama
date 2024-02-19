@@ -17,10 +17,10 @@ export default memo(function ServiceTable({ data, deleteItem, openEdit }: Props)
                    <th className="text-start py-1 px-2 border border-slate-300">Название</th>
                    <th align="center" className="py-1 px-2 border border-slate-300">Цена</th>
                    <th className="text-center py-1 px-2 border border-slate-300">Приоритет</th>
-                   <th className="text-center py-1 px-2 border border-slate-300">unitItem</th>
-                   <th className="text-center py-1 px-2 border border-slate-300">unitTime</th>
-                   <th className="text-center py-1 px-2 border border-slate-300">unitVolume</th>
-                   <th className="text-center py-1 px-2 border border-slate-300">unitWeight</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Количество</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Время</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Обьем</th>
+                   <th className="text-center py-1 px-2 border border-slate-300">Вес</th>
                    <th className="text-center py-1 px-2 border border-slate-300">Действие</th>
                </tr>
             </thead>

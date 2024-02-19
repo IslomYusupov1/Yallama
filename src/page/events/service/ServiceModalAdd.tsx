@@ -52,6 +52,7 @@ const customStyles = {
 function ServiceModalAdd({open, close, loading, createService, selectServiceOptions, serviceData, selectedData, editService}: Props) {
     const [selectedValue, setSelectedValue] = useState<{label: string, value: string; data: ServicesPromiseData | null}>({label: "", value: "", data: null});
     const [search, setSearch] = useState(false);
+
     const initialValues = useMemo(() => {
         return {
             serviceId: selectedData?.serviceId,
@@ -142,14 +143,14 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                                    <table className="border-spacing-2 text-[12px] table-fixed border-b">
                                        <thead className="border-b border-black">
                                        <tr>
-                                           <th className="text-start py-1 px-2">Name</th>
-                                           <th className="text-center py-1 px-2">UnitItem</th>
-                                           <th className="text-center py-1 px-2">UnitTime</th>
-                                           <th className="text-center py-1 px-2">UnitVolume</th>
-                                           <th className="text-center py-1 px-2">UnitWeight</th>
-                                           <th className="text-center py-1 px-2">Price</th>
-                                           <th className="text-center py-1 px-2">isPrimary</th>
-                                           <th className="text-center py-1 px-2">Type</th>
+                                           <th className="text-start py-1 px-2">Название</th>
+                                           <th className="text-center py-1 px-2">Количество</th>
+                                           <th className="text-center py-1 px-2">Время</th>
+                                           <th className="text-center py-1 px-2">Обьем</th>
+                                           <th className="text-center py-1 px-2">Вес</th>
+                                           <th className="text-center py-1 px-2">Цена</th>
+                                           <th className="text-center py-1 px-2">Основной</th>
+                                           <th className="text-center py-1 px-2">Тип</th>
                                        </tr>
                                        </thead>
                                        <tbody className="text-start py-1 px-2 border-b border-slate-300 overflow-auto">
