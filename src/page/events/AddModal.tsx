@@ -19,12 +19,12 @@ export default memo(function AddModal({open, close, setNewData}: Props) {
 
     const createPlate = (values: FormikValues) => {
         setLoading(true)
-        EventsApi.createPlate({plateNumber: values.plateNumber}).then(res => {
+        EventsApi.createPlate({licenseNumber: values.licenseNumber}).then(res => {
             if (res.id) {
                 EventsApi.getFile().then(file => {
                     if (file?.data?.length > 0) {
                        EventsApi.createSession({
-                           plateNumber: values?.plateNumber,
+                           licenseNumber: values?.licenseNumber,
                            enterDate: new Date(),
                            fileId: file?.data[0]?.id
                        }).then(() => {
@@ -53,6 +53,13 @@ export default memo(function AddModal({open, close, setNewData}: Props) {
                                // description: "Friday, February 10, 2023 at 5:57 PM",
                            })
                        })
+                    } else {
+                        toast({
+                            title: "Список файлов пуст",
+                            // description: "Friday, February 10, 2023 at 5:57 PM",
+                        })
+                        setLoading(false);
+                        close();
                     }
                 })
             }
@@ -74,11 +81,11 @@ export default memo(function AddModal({open, close, setNewData}: Props) {
                     {/*</DialogDescription>*/}
                 </DialogHeader>
                 <div className="flex gap-4 w-full">
-                    <Formik initialValues={{plateNumber: ""}} onSubmit={(values) => createPlate(values)}>
+                    <Formik initialValues={{licenseNumber: ""}} onSubmit={(values) => createPlate(values)}>
                         {({handleSubmit}) => (
                             <Form onSubmit={handleSubmit} className="w-full">
                                 <label htmlFor="" className="">Номер транспорта</label>
-                                <Field name="plateNumber"
+                                <Field name="licenseNumber"
                                        className="shadow appearance-none bg-white border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                                 <DialogFooter className="mt-4">
                                     <button type="submit" disabled={loading}

@@ -19,13 +19,13 @@ export class EventsApi extends BaseApi {
   public payToServices(id: string) {
     return this.post(`sessions/${id}/pay`);
   }
-  public createPlate(json : { plateNumber: string }): Promise<{id: string}> {
+  public createPlate(json : { licenseNumber: string }): Promise<{id: string}> {
     return this.post(`vehicles`, { json: json })
   }
   public getFile(): Promise<{data: [{ id: string, name: string }]}> {
     return this.get(`files`)
   }
-  public createSession(json: { fileId: string, plateNumber: string, enterDate: Date }): Promise<{data: [{ id: string, name: string }]}> {
+  public createSession(json: { fileId: string, licenseNumber: string, enterDate: Date }): Promise<{data: [{ id: string, name: string }]}> {
     return this.post(`sessions`, { json: json })
   }
   public getEventSessionServices(query: {sessionId: string, limit: number}): Promise<{ data: EventSessionServicePromiseData[], totalCount: number }> {
