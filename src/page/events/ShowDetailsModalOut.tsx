@@ -1,8 +1,8 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {memo, useEffect, useMemo, useState} from "react";
 import {AccessLogsPromiseData, VehicleProps} from "@/api/events/EventsDTO";
-import {useEventsApiContext} from "@/api/events/EventsContext";
-import {useToast} from "@/components/ui/use-toast";
+// import {useEventsApiContext} from "@/api/events/EventsContext";
+// import {useToast} from "@/components/ui/use-toast";
 import Select from "react-select";
 import {customStyles} from "@/page/events/service/ServiceModalAdd";
 
@@ -14,12 +14,12 @@ interface Props {
     readonly vehicles: VehicleProps[];
 }
 
-export default memo(function ShowDetailsModalOut({open, close, data, plate, vehicles}: Props) {
-    const {EventsApi} = useEventsApiContext();
-    const { toast } = useToast()
-
-    const [loading, setLoading] = useState<boolean>(false);
-    const [licenseNumber, setLicenseNumber] = useState<{ label: string, value: string }>({});
+export default memo(function ShowDetailsModalOut({open, close, data, vehicles}: Props) {
+    // const {EventsApi} = useEventsApiContext();
+    // const { toast } = useToast()
+    //
+    // const [loading, setLoading] = useState<boolean>(false);
+    const [licenseNumber, setLicenseNumber] = useState<{ label: string, value: string } | any>({});
     const vehiclesOptions = useMemo(() => {
         const arr: {label: string, value: string}[] = [];
         vehicles?.forEach((x) => arr?.push({ label: x.licenseNumber, value: x.id }))

@@ -1,5 +1,5 @@
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {memo, useEffect, useState} from "react";
+import {memo, useState} from "react";
 import {AccessLogsPromiseData, EventsStatusEnum} from "@/api/events/EventsDTO";
 import {useNavigate} from "react-router";
 import {RoutesEnum} from "@/components/routes/Routes";
