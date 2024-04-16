@@ -8,6 +8,36 @@ export interface EventsQuery {
     readonly status: string;
 }
 
+export interface AccessLogsPromiseData {
+    readonly id: string;
+    readonly direction: string;
+    readonly file: FileProps
+    readonly session: SessionProps;
+    readonly gate: {
+        readonly id: string;
+        readonly key: string;
+    }
+    readonly vehicle: VehicleProps
+}
+
+export interface VehicleProps {
+    readonly id: string;
+    readonly licenseNumber: string
+}
+
+export interface FileProps {
+    readonly id: string;
+    readonly name: string;
+    readonly url: string;
+}
+
+export interface SessionProps {
+    readonly id: string;
+    readonly isPaid: boolean;
+    readonly isTook: boolean;
+    readonly status: string;
+    readonly canExit: string;
+}
 export interface SessionPromiseData {
     readonly ecanExit: boolean;
     readonly createdAt: string;
@@ -23,10 +53,7 @@ export interface SessionPromiseData {
     readonly isTook: boolean;
     readonly status: EventsStatusEnum;
     readonly updatedAt: string;
-    readonly vehicle: {
-        id: string;
-        readonly plateNumber: string;
-    }
+    readonly vehicle: VehicleProps
 }
 
 export interface EventSessionServicePromiseData {

@@ -10,3 +10,6 @@ export enum RolesEnum {
   OPERATOR = "OPERATOR",
   ADMIN = "ADMIN",
 }
+export interface Dict<T> {
+  readonly [key: string]: T;
+}

@@ -3,13 +3,13 @@ import {Field, Form, Formik, FormikValues} from "formik";
 import {useEventsApiContext} from "@/api/events/EventsContext";
 import {memo, useState} from "react";
 import {ReloadIcon} from "@radix-ui/react-icons"
-import {EventsStatusEnum, SessionPromiseData} from "@/api/events/EventsDTO";
+import {AccessLogsPromiseData, EventsStatusEnum, EventsStatusEnumx} from "@/api/events/EventsDTO";
 import {useToast} from "@/components/ui/use-toast";
 
 interface Props {
     readonly open: boolean;
     readonly close: () => void;
-    readonly setNewData: (value: SessionPromiseData[]) => void;
+    readonly setNewData: (value: AccessLogsPromiseData[]) => void;
 }
 
 export default memo(function AddModal({open, close, setNewData}: Props) {
@@ -54,12 +54,36 @@ export default memo(function AddModal({open, close, setNewData}: Props) {
                            })
                        })
                     } else {
-                        toast({
-                            title: "Список файлов пуст",
-                            // description: "Friday, February 10, 2023 at 5:57 PM",
+                        EventsApi.createSession({
+                            licenseNumber: values?.licenseNumber,
+                            enterDate: new Date(),
+                            // fileId: file?.data[0]?.id
+                        }).then(() => {
+                            toast({
+                                title: "Успешно создан",
+                                // description: "Friday, February 10, 2023 at 5:57 PM",
+                            })
+                            setLoading(false)
+                            close();
+                            EventsApi.getEventsList({
+                                status: EventsStatusEnum.NEW
+                            }).then((res) => {
+                                setLoading(false)
+                                setNewData(res.data)
+                            }).catch((error) => {
+                                toast({
+                                    title: error.data,
+                                    // description: "Friday, February 10, 2023 at 5:57 PM",
+                                })
+                                setLoading(false)
+                            })
+                        }).catch((error) => {
+                            setLoading(false)
+                            toast({
+                                title: error.data,
+                                // description: "Friday, February 10, 2023 at 5:57 PM",
+                            })
                         })
-                        setLoading(false);
-                        close();
                     }
                 })
             }

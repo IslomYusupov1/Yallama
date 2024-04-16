@@ -1,14 +1,24 @@
 import { BaseApi } from "../BaseApi";
 import {
+  AccessLogsPromiseData,
   EventSessionServicePromiseData,
-  EventsQuery, ServiceBody,
+  EventsQuery, EventsStatusEnum, ServiceBody,
   ServicesPromiseData,
-  SessionPromiseData
+  SessionPromiseData, VehicleProps
 } from "@/api/events/EventsDTO";
 
 export class EventsApi extends BaseApi {
   public auth(json: { phone: string, password: string }): Promise<{accessToken: string, refreshToken: string}> {
     return this.post(`auth/login`, { json: json });
+  }
+  public getAccessLogs(): Promise<{data: AccessLogsPromiseData[], totalCount: number}> {
+    return this.get(`access-logs`,);
+  }
+  public getAccessLogsDetails(licenseNumber: string): Promise<AccessLogsPromiseData> {
+    return this.get(`access-logs/vehicle/${licenseNumber}`);
+  }
+  public changeLicenseNumber(id: string, licenseNumber: string) {
+    return this.patch(`access-logs/${id}/vehicle`, { json: { licenseNumber: licenseNumber } });
   }
   public getEventsList(query: EventsQuery): Promise<{data: SessionPromiseData[]}> {
     return this.get(`sessions`, { query: query });
@@ -19,13 +29,16 @@ export class EventsApi extends BaseApi {
   public payToServices(id: string) {
     return this.post(`sessions/${id}/pay`);
   }
+  public getVehicles(status: EventsStatusEnum): Promise<{data: VehicleProps[]}> {
+    return this.get(`vehicles?filter[session.status]=${status}`)
+  }
   public createPlate(json : { licenseNumber: string }): Promise<{id: string}> {
     return this.post(`vehicles`, { json: json })
   }
   public getFile(): Promise<{data: [{ id: string, name: string }]}> {
     return this.get(`files`)
   }
-  public createSession(json: { fileId: string, licenseNumber: string, enterDate: Date }): Promise<{data: [{ id: string, name: string }]}> {
+  public createSession(json: { fileId?: string, licenseNumber: string, enterDate: Date }): Promise<{data: [{ id: string, name: string }]}> {
     return this.post(`sessions`, { json: json })
   }
   public getEventSessionServices(query: {sessionId: string, limit: number}): Promise<{ data: EventSessionServicePromiseData[], totalCount: number }> {
@@ -57,5 +70,14 @@ export class EventsApi extends BaseApi {
   }
   public serviceTook(serviceId: string) {
     return this.patch(`session-service/${serviceId}/took`)
+  }
+  public openGate(id: string) {
+    return this.patch(`sessions/${id}/gate-in-open`)
+  }
+  public outGate(id: string) {
+    return this.patch(`sessions/${id}/gate-out-open`)
+  }
+  public createFile(json: { name: string }) {
+    return this.post(`files`, { json: json })
   }
 }

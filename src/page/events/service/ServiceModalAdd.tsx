@@ -17,7 +17,7 @@ interface Props {
     readonly selectedData: EventSessionServicePromiseData | Record<string, any>;
 }
 
-const customStyles = {
+export const customStyles = {
     control: (baseStyles: any, state: any) => ({
         ...baseStyles,
         "&:hover": {

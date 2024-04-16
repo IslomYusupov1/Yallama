@@ -1,4 +1,4 @@
-import {ArrowLeftIcon, PlusIcon} from "@radix-ui/react-icons"
+import {ArrowLeftIcon, CheckIcon, PlusIcon} from "@radix-ui/react-icons"
 import ServiceEventTable from "@/page/events/service/ServiceEventTable";
 import {useNavigate} from "react-router";
 import {useSearchParams} from "react-router-dom";
@@ -223,10 +223,16 @@ function ServicePage() {
     }, [searchParams, EventsApi])
     return (
         <div className="flex flex-col mt-5 font-sans">
-            <button onClick={() => navigate(-1)} className="relative w-[100px] bg-[#61686b] flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
-                <ArrowLeftIcon className="absolute left-4 h-4 w-4"/>
-                <span className="mx-2">Назад</span>
-            </button>
+            <div className="w-full flex justify-between">
+                <button onClick={() => navigate(-1)} className="relative w-[100px] bg-[#61686b] flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                    <ArrowLeftIcon className="absolute left-4 h-4 w-4"/>
+                    <span className="mx-2">Назад</span>
+                </button>
+                <button className="relative w-[250px] bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                    <CheckIcon className="absolute left-4 h-4 w-4"/>
+                    <span className="mx-2">Проверить задолжность</span>
+                </button>
+            </div>
             <div className="mt-4">
                 {tokenInfo?.role !== RolesEnum.ACCOUNTANT && <button onClick={() => setOpen(true)}
                          className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
