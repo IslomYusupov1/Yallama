@@ -11,8 +11,8 @@ export class EventsApi extends BaseApi {
   public auth(json: { phone: string, password: string }): Promise<{accessToken: string, refreshToken: string}> {
     return this.post(`auth/login`, { json: json });
   }
-  public getAccessLogs(): Promise<{data: AccessLogsPromiseData[], totalCount: number}> {
-    return this.get(`access-logs`,);
+  public getAccessLogs(direction: string, session: string): Promise<{data: AccessLogsPromiseData[], totalCount: number}> {
+    return this.get(`access-logs?filter[direction]=${direction}&filter[session][status]=${session}&limit=-1`);
   }
   public getAccessLogsDetails(licenseNumber: string): Promise<AccessLogsPromiseData> {
     return this.get(`access-logs/vehicle/${licenseNumber}`);
@@ -72,12 +72,15 @@ export class EventsApi extends BaseApi {
     return this.patch(`session-service/${serviceId}/took`)
   }
   public openGate(id: string) {
-    return this.patch(`sessions/${id}/gate-in-open`)
+    return this.patch(`sessions/${id}/gate-in-open?filter[session][status]=NEW`)
   }
   public outGate(id: string) {
-    return this.patch(`sessions/${id}/gate-out-open`)
+    return this.patch(`sessions/${id}/gate-out-open?filter[session][status]=NEW`)
   }
-  public createFile(json: { name: string }) {
+  public createFile(json: { path: string; name: string }) {
     return this.post(`files`, { json: json })
+  }
+  public checkCustom(accessLogId: string): Promise<any> {
+    return this.get(`access-logs/${accessLogId}/customuz`)
   }
 }

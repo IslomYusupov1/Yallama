@@ -190,6 +190,12 @@ function ServicePage() {
         })
     }
 
+    const checkCustom = () => {
+        EventsApi.checkCustom(searchParams?.get("id") as string).then(res => {
+            console.log(res, "res")
+        })
+    }
+
     useEffect(() => {
         if (open) {
            EventsApi.getAllServices(100).then((res) => {
@@ -230,7 +236,7 @@ function ServicePage() {
                 </button>
                 <button className="relative w-[250px] bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                     <CheckIcon className="absolute left-4 h-4 w-4"/>
-                    <span className="mx-2">Проверить задолжность</span>
+                    <span className="mx-2" onClick={checkCustom}>Проверить задолжность</span>
                 </button>
             </div>
             <div className="mt-4">

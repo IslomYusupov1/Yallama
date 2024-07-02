@@ -6,26 +6,25 @@ import {RoutesEnum} from "@/components/routes/Routes";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import {useEventsApiContext} from "@/api/events/EventsContext";
 import {useToast} from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 
 interface Props {
     readonly open: boolean;
     readonly close: () => void;
     readonly data: AccessLogsPromiseData | Record<string, any>;
-    readonly plate: { number: string, id: string };
     readonly openGate: (sessionId: string) => void;
-    readonly outGate: (sessionId: string) => void;
+    // readonly outGate: (sessionId: string) => void;
     readonly loadingOpen: boolean;
 }
 
-export default memo(function ShowDetailsModal({open, close, data, plate, openGate, loadingOpen, outGate}: Props) {
+export default memo(function ShowDetailsModal({open, close, data, openGate, loadingOpen}: Props) {
     const navigate = useNavigate();
     const {EventsApi} = useEventsApiContext();
     const { toast } = useToast()
 
     const [edit, setEdit] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [licenseNumber, setLicenseNumber] = useState<string>(plate?.number);
-
+    const [licenseNumber, setLicenseNumber] = useState<string>("");
     const editLicenseNumber = () => {
         setLoading(true);
         EventsApi.changeLicenseNumber(data?.id, licenseNumber).then(() => {
@@ -39,42 +38,42 @@ export default memo(function ShowDetailsModal({open, close, data, plate, openGat
             })
         })
     }
-
     return (
         <>
             <Dialog open={open} onOpenChange={close}>
-                <DialogContent className="max-w-none w-[550px]">
+                <DialogContent className="max-w-[800px]">
                     <DialogHeader className="border-b pb-2">
                         <div className="flex text-center items-center justify-between mx-4">
                             <DialogTitle>О транспорте</DialogTitle>
                             {/*<DialogDescription>*/}
                             {/*    вся информация о транспорте.*/}
                             {/*</DialogDescription>*/}
-                            {data?.session?.status === EventsStatusEnum.IN_PROGRESS &&
-                                <button type="submit" onClick={() => outGate(data?.session?.id)}
-                                        className={`${loadingOpen && "opacity-50"} outline-0 flex relative bg-teal-500 text-[14px] text-white py-2 px-8 rounded-l`}>
-                                <span>
-                                  {loadingOpen ? "Загрузка..." : "Выход"}
-                                </span>
-                                    {loadingOpen && <ReloadIcon className="absolute right-3 top-2.5 h-4 w-4 animate-spin"/>}
-                                </button>}
+                            {/*{data?.session?.status === EventsStatusEnum.IN_PROGRESS &&*/}
+                            {/*    <button type="submit" onClick={() => outGate(data?.session?.id)}*/}
+                            {/*            className={`${loadingOpen && "opacity-50"} outline-0 flex relative bg-teal-500 text-[14px] text-white py-2 px-8 rounded-l`}>*/}
+                            {/*    <span>*/}
+                            {/*      {loadingOpen ? "Загрузка..." : "Выход"}*/}
+                            {/*    </span>*/}
+                            {/*        {loadingOpen && <ReloadIcon className="absolute right-3 top-2.5 h-4 w-4 animate-spin"/>}*/}
+                            {/*    </button>}*/}
                         </div>
                     </DialogHeader>
-                    <div className="flex gap-4 w-full border-b pb-4">
-                        <div className="">
-                            <img
-                                width={200}
-                                height={200}
-                                className="object-cover"
+                    <div className="flex justify-between gap-4 w-full border-b pb-4">
+                        <div className="w-1/2 z-50">
+                            <motion.img
+                                whileHover={{ scale: 2, x: "200px", transition: { duration: 0.3, }}}
+                                width={300}
+                                height={300}
+                                className="object-cover bg-white"
                                 src={data?.file?.url}
                                 alt=""/>
                         </div>
-                        <div className="flex flex-col w-1/2 gap-4">
-                            <div className="flex justify-between">
+                        <div className="flex flex-col w-1/2 gap-4 z-40">
+                            <div className="flex justify-start gap-5 text-center items-center">
                                 <span className="text-start opacity-50 text-[15px]">Номер транспорта: </span>
                                 <p className="text-end">{data?.vehicle?.licenseNumber}</p>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="flex justify-start gap-5 text-center items-center">
                                 <span className="text-start opacity-50 text-[15px]">Статус: </span>
                                 <p className="text-end text-[15px]">{data?.session?.status}</p>
                             </div>
@@ -84,7 +83,7 @@ export default memo(function ShowDetailsModal({open, close, data, plate, openGat
                     <div className="flex justify-between w-full">
                             <button type="submit" onClick={() => {
                                 setEdit(true);
-                                setLicenseNumber(plate?.number)
+                                setLicenseNumber(data?.vehicle?.licenseNumber)
                             }}
                                     className="bg-red-500 outline-0 text-[14px] text-white py-2 px-8 rounded-l">Изменить номер
                                 транспорта
