@@ -132,8 +132,10 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                     </div>
                 </DialogContent>
             </Dialog>
-            <Dialog open={search} onOpenChange={() => setSearch(false)}>
-                <DialogContent className="max-w-none w-[750px] overflow-auto">
+            <Dialog open={search} onOpenChange={() => setSearch(false)} modal={false}>
+                {search && <div className="fixed top-0 left-0 w-screen h-screen"
+                              style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
+                <DialogContent className="max-w-none lg:w-[750px] max-w-[700px] overflow-auto">
                     <DialogHeader className="border-b pb-2">
                         <DialogTitle>Выберите услугу</DialogTitle>
                         <div className="flex gap-4">

@@ -27,8 +27,8 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
     return (
         <>
             <table
-                className={` border-spacing-2 transition-all text-[15px] table-auto w-full overflow-auto border border-slate-500 mt-5 bg-[#f5f6f7]`}>
-                <thead>
+                className={`border-spacing-2 transition-all text-[15px] table-auto w-full overflow-auto border border-slate-500 mt-5 bg-[#f5f6f7]`}>
+                <thead className="lg:text-[17px] text-[15px]">
                 <tr>
                     <th className="text-start py-1 px-2 border border-slate-300">Название</th>
                     <th align="center" className="py-1 px-2 border border-slate-300">Цена</th>
@@ -44,7 +44,7 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                         <th className="text-center py-1 px-2 border border-slate-300">Действие</th>}
                 </tr>
                 </thead>
-                <tbody>
+                <tbody className="lg:text-[15px] text-[14px]">
                 {data?.map((items) => <tr key={items.id}>
                     <td align="left" className="py-1 px-2 border border-slate-300">{items.name}
                     </td>
@@ -77,7 +77,7 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                         </td>}
                 </tr>)}
                 </tbody>
-                <tbody>
+                <tbody className="lg:text-[15px] text-[14px]">
                 <td align="left" className="py-1 px-2 border border-slate-300">
                     <div className="flex justify-between">
                         <span className="font-medium">Общая количество: </span>
