@@ -105,7 +105,9 @@ export default memo(function ShowDetailsModal({open, close, data, openGate, load
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-            <Dialog open={edit} onOpenChange={() => setEdit(false)}>
+            <Dialog open={edit} onOpenChange={() => setEdit(false)} modal={false}>
+                {edit && <div className="fixed top-0 left-0 w-screen h-screen"
+                              style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
                 <DialogContent className="max-w-none w-[550px]">
                     <DialogHeader className="border-b pb-2">
                         <DialogTitle>Редактирование номера транспорта</DialogTitle>
