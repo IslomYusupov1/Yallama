@@ -1,4 +1,4 @@
-import {ArrowLeftIcon, CheckIcon, PlusIcon} from "@radix-ui/react-icons"
+import {ArrowLeftIcon, CheckIcon, PlusIcon, ReloadIcon} from "@radix-ui/react-icons"
 import ServiceEventTable from "@/page/events/service/ServiceEventTable";
 import {useNavigate} from "react-router";
 import {useSearchParams} from "react-router-dom";
@@ -14,10 +14,10 @@ import jwt_decode from "jwt-decode";
 import {RolesEnum} from "@/api/MainDTO";
 
 function ServicePage() {
-    const { toast } = useToast()
+    const {toast} = useToast()
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { EventsApi } = useEventsApiContext();
+    const {EventsApi} = useEventsApiContext();
 
     const [data, setData] = useState<EventSessionServicePromiseData[]>([])
     const [totalPrice, setTotalPrice] = useState<number>(0)
@@ -30,8 +30,8 @@ function ServicePage() {
     const token = useShallowEqualSelector(tokenSelector);
     const tokenInfo = token && (jwt_decode(token ? token : "") as any);
 
-    const payBtnCheck =  useMemo(() => Boolean(data?.find(x => x.tookDate === null)), [data]);
-    const payedCheck =  useMemo(() => Boolean(data?.find(x => !x.isPaid)), [data]);
+    const payBtnCheck = useMemo(() => Boolean(data?.find(x => x.tookDate === null)), [data]);
+    const payedCheck = useMemo(() => Boolean(data?.find(x => !x.isPaid)), [data]);
 
     const closeFunc = useCallback(() => {
         setOpen(false);
@@ -39,7 +39,7 @@ function ServicePage() {
     }, [])
 
     const selectServiceOptions = useMemo(() => {
-        const data: {label: string, value: string, data: ServicesPromiseData}[] = [];
+        const data: { label: string, value: string, data: ServicesPromiseData }[] = [];
         services?.forEach((service) => {
             data.push({label: service.name, value: service.id, data: service})
         })
@@ -100,9 +100,9 @@ function ServicePage() {
             countTime: values?.countTime > 0 ? values?.countTime : undefined,
             sessionId: searchParams?.get("id") as string,
             serviceId: values?.serviceId,
-            countItem:  values?.countItem > 0 ? values?.countItem : undefined,
-            countVolume:  values?.countVolume > 0 ? values?.countVolume : undefined,
-            countWeight:  values?.countWeight > 0 ? values?.countWeight : undefined
+            countItem: values?.countItem > 0 ? values?.countItem : undefined,
+            countVolume: values?.countVolume > 0 ? values?.countVolume : undefined,
+            countWeight: values?.countWeight > 0 ? values?.countWeight : undefined
         }).then(() => {
             toast({
                 title: "Успешно добавлен",
@@ -133,9 +133,9 @@ function ServicePage() {
             countTime: values?.countTime > 0 ? values?.countTime : undefined,
             sessionId: searchParams?.get("id") as string,
             serviceId: values?.serviceId,
-            countItem:  values?.countItem > 0 ? values?.countItem : undefined,
-            countVolume:  values?.countVolume > 0 ? values?.countVolume : undefined,
-            countWeight:  values?.countWeight > 0 ? values?.countWeight : undefined
+            countItem: values?.countItem > 0 ? values?.countItem : undefined,
+            countVolume: values?.countVolume > 0 ? values?.countVolume : undefined,
+            countWeight: values?.countWeight > 0 ? values?.countWeight : undefined
         }).then(() => {
             toast({
                 title: "Успешно изменен",
@@ -208,14 +208,14 @@ function ServicePage() {
     console.log(customData, "c")
     useEffect(() => {
         if (open) {
-           EventsApi.getAllServices(100).then((res) => {
-            setServices(res.data)
-           }).catch((error) => {
-               toast({
-                   title: error.data,
-                   description: "error",
-               })
-           })
+            EventsApi.getAllServices(100).then((res) => {
+                setServices(res.data)
+            }).catch((error) => {
+                toast({
+                    title: error.data,
+                    description: "error",
+                })
+            })
         }
     }, [EventsApi, open])
 
@@ -240,58 +240,74 @@ function ServicePage() {
     return (
         <div className="flex flex-col mt-5 font-sans">
             <div className="w-full flex justify-between">
-                <button onClick={() => navigate(-1)} className="relative w-[100px] bg-[#61686b] flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                <button onClick={() => navigate(-1)}
+                        className="relative w-[100px] bg-[#61686b] flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                     <ArrowLeftIcon className="absolute left-4 h-4 w-4"/>
                     <span className="mx-2">Назад</span>
                 </button>
-                <button className="relative w-[250px] bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                <div
+                    className="relative w-[250px] bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                     <CheckIcon className="absolute left-4 h-4 w-4"/>
-                    <button className="mx-2 disabled:cursor-progress" disabled={loadingCheck} onClick={checkCustom}>Проверить задолжность</button>
-                </button>
+                    <button type="submit" onClick={checkCustom}
+                            className={`${loadingCheck && "opacity-50"} outline-0 flex  bg-teal-500 text-white mx-2`}>
+                            <span className="text-center items-center">
+                              Проверить задолжность
+                            </span>
+                        {loadingCheck &&
+                            <ReloadIcon className="absolute right-3 top-2.5 h-4 w-4 animate-spin"/>}
+                    </button>
+                </div>
             </div>
             <div className="mt-4">
                 {tokenInfo?.role !== RolesEnum.ACCOUNTANT && <button onClick={() => setOpen(true)}
-                         className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
+                                                                     className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                     <span className="mx-2">Добавить</span>
                     <PlusIcon className="absolute right-2 h-5 w-5"/>
                 </button>}
                 {data?.length > 0 ? <div className="overflow-auto">
-                    <ServiceEventTable payedCheck={payedCheck} openEdit={openEdit} data={data} deleteItem={deleteItem} totalPrice={totalPrice}
+                    <ServiceEventTable payedCheck={payedCheck} openEdit={openEdit} data={data} deleteItem={deleteItem}
+                                       totalPrice={totalPrice}
                                        tookFunc={tookFunc}/>
-                </div> : <span className="" />}
-                {data?.length > 0 && (tokenInfo?.role !== RolesEnum.WAREHOUSE_MANAGER && tokenInfo?.role !== RolesEnum.OPERATOR) && <div className="w-full text-end items-end flex justify-end mt-3">
-                    {payedCheck ? <button onClick={payToSessions} disabled={payBtnCheck || loadingCreate}
-                                          className="bg-red-600 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed px-8 py-2 rounded-sm text-white">Оплата</button> :
-                        <span className="bg-teal-500 px-8 py-2 rounded-sm text-white">Оплачено</span>}
-                </div>}
+                </div> : <span className=""/>}
+                {data?.length > 0 && (tokenInfo?.role !== RolesEnum.WAREHOUSE_MANAGER && tokenInfo?.role !== RolesEnum.OPERATOR) &&
+                    <div className="w-full text-end items-end flex justify-end mt-3">
+                        {payedCheck ? <button onClick={payToSessions} disabled={payBtnCheck || loadingCreate}
+                                              className="bg-red-600 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed px-8 py-2 rounded-sm text-white">Оплата</button> :
+                            <span className="bg-teal-500 px-8 py-2 rounded-sm text-white">Оплачено</span>}
+                    </div>}
             </div>
-            {customData?.resultnote && !loadingCheck && <div className="border-2 rounded-xl mt-5 px-5 py-2 border-teal-500 shadow-orange-100">
-                <h3 className="text-[25px] font-normal">Результат проверки задолжности:</h3>
-                <div className="mx-10">
-                    <div className="flex text-[17px] mt-2 gap-2 mb-3">
-                        <span>Примечание: </span>
-                        <h3>{customData?.resultnote}</h3>
-                    </div>
-                    {customData?.resultcode !== "1" &&
-                        <div className=" flex flex-wrap justify-start mx-auto w-full gap-x-6 gap-y-2">
-                            {customData?.rows?.map((items: Record<string, any>, index: number) => (
-                                <div
-                                    className="flex text-[16px] flex-col text-start w-[48%] rounded-xl border border-teal-300"
-                                    key={index}>
-                                    {Object?.entries(items)?.map(([key, value]) => (
-                                        <div key={key} className="flex text-center items-center p-2 gap-5 border-b border-teal-200 last:border-b-0">
-                                            <span className="">{key}:</span>
-                                            <p>{value}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
+            {customData?.resultnote && !loadingCheck &&
+                <div className="border-2 rounded-xl mt-5 px-5 py-2 border-teal-500 shadow-orange-100">
+                    <h3 className="text-[25px] font-normal">Результат проверки задолжности:</h3>
+                    <div className="mx-10">
+                        <div className="flex text-[17px] mt-2 gap-2 mb-3">
+                            <span>Примечание: </span>
+                            <h3>{customData?.resultnote}</h3>
                         </div>
-                    }
-                </div>
-            </div>}
-            <ServiceModalAdd selectedData={selectedData} editService={editService} open={open} serviceData={services} selectServiceOptions={selectServiceOptions} close={closeFunc} createService={addService} loading={loadingCreate} />
+                        {customData?.resultcode !== "1" &&
+                            <div className=" flex flex-wrap justify-start mx-auto w-full gap-x-6 gap-y-2">
+                                {customData?.rows?.map((items: Record<string, any>, index: number) => (
+                                    <div
+                                        className="flex text-[16px] flex-col text-start w-[48%] rounded-xl border border-teal-300"
+                                        key={index}>
+                                        {Object?.entries(items)?.map(([key, value]) => (
+                                            <div key={key}
+                                                 className="flex text-center items-center p-2 gap-5 border-b border-teal-200 last:border-b-0">
+                                                <span className="">{key}:</span>
+                                                <p>{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                    </div>
+                </div>}
+            <ServiceModalAdd selectedData={selectedData} editService={editService} open={open} serviceData={services}
+                             selectServiceOptions={selectServiceOptions} close={closeFunc} createService={addService}
+                             loading={loadingCreate}/>
         </div>
     );
 }
+
 export default ServicePage;
