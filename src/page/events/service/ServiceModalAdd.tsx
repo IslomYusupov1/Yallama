@@ -93,7 +93,7 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                                 <Form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
                                     <div className="w-full relative">
                                         <label htmlFor="" className="">Название</label>
-                                        <Select autoFocus={false} menuIsOpen={false} className="" options={selectServiceOptions} value={selectedValue} styles={customStyles}
+                                        <Select autoFocus={false} className="" options={selectServiceOptions} value={selectedValue} styles={customStyles}
                                                 onChange={(e: any) => {setSelectedValue(e)}}/>
                                         <SearchIcon className="absolute bg-white right-12 top-8 cursor-pointer"  onClick={() => setSearch(true)} />
                                     </div>
