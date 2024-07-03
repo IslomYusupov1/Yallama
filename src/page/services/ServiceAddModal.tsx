@@ -60,6 +60,8 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
     }, [selectedData])
     return (
         <Dialog open={open} onOpenChange={close} modal={false}>
+            {open && <div className="fixed top-0 left-0 w-screen h-screen"
+                          style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
             <DialogContent className="max-w-none w-[550px] shadow-teal-100 border-2">
                 <DialogHeader className="border-b pb-2">
                     <DialogTitle>Добавление Сервиса</DialogTitle>

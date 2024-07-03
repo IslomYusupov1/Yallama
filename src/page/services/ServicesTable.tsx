@@ -11,7 +11,7 @@ interface Props {
 
 export default memo(function ServiceTable({ data, deleteItem, openEdit }: Props) {
     return (
-        <table className="border-spacing-2 text-[15px] table-auto border border-slate-500 mt-5 bg-[#f5f6f7]">
+        <table className="border-spacing-2 text-[15px] table-auto w-full border border-slate-500 mt-5 bg-[#f5f6f7]">
             <thead>
                <tr className="">
                    <th className="text-start py-1 px-2 border border-slate-300">Название</th>

@@ -50,7 +50,9 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
     }
     return (
         <>
-            <Dialog open={open} onOpenChange={close}>
+            <Dialog open={open} onOpenChange={close} modal={false}>
+                {open && <div className="fixed top-0 left-0 w-screen h-screen"
+                      style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
                 <DialogContent className="max-w-none max-w-[800px] h-[400px]">
                     <DialogHeader className="border-b pb-2">
                         <div className="flex justify-between text-center items-center mx-7">
