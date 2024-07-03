@@ -77,7 +77,9 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
     }, [open])
     return (
         <>
-            <Dialog open={open} onOpenChange={close}>
+            <Dialog open={open} onOpenChange={close} modal={false}>
+                {open && <div className="fixed top-0 left-0 w-screen h-screen"
+                              style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
                 <DialogContent className="max-w-none w-[550px]">
                     <DialogHeader className="border-b pb-2">
                         <DialogTitle>Добавление сервиса</DialogTitle>
@@ -91,7 +93,7 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                                 <Form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
                                     <div className="w-full relative">
                                         <label htmlFor="" className="">Название</label>
-                                        <Select className="" options={selectServiceOptions} value={selectedValue} styles={customStyles}
+                                        <Select autoFocus={false} menuIsOpen={false} className="" options={selectServiceOptions} value={selectedValue} styles={customStyles}
                                                 onChange={(e: any) => {setSelectedValue(e)}}/>
                                         <SearchIcon className="absolute bg-white right-12 top-8 cursor-pointer"  onClick={() => setSearch(true)} />
                                     </div>

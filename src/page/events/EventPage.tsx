@@ -90,7 +90,7 @@ function EventPage() {
                 // } else {
                 //     setOpenOut(true);
                 // }
-                setOpenOut(true);
+                setOpen(true);
                 getAllSessions();
                 setPlateDetails(res)
                 setLoadingDetails(false)
