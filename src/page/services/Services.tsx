@@ -140,12 +140,14 @@ function Services() {
     }, [EventsApi, limit])
 
     return (
-        <div className="mt-5">
+        <div className="mt-5 w-full">
             <button onClick={() => setOpen(true)} className="relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm">
                 <span className="">Создать</span>
                 <PlusIcon className="absolute right-2 h-5 w-5"/>
             </button>
+            <div className="w-full overflow-auto">
             <ServicesTable data={data} openEdit={openEdit} loading={loading} deleteItem={deleteService} />
+            </div>
             <div className="flex justify-end mt-5">
                 <span onClick={() => setLimit((prev) => prev + 10)} className="bg-green-500 cursor-pointer px-6 py-2 rounded-sm text-white">Показать еше</span>
             </div>

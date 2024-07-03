@@ -201,8 +201,7 @@ function EventPage() {
                 <motion.div
                     initial={{
                         y: 100
-                    }
-                    }
+                    }}
                     animate={{y: 0}}
                     transition={{duration: 0.3, ease: "easeIn"}}
                     className="flex flex-col min-h-[100px] w-1/4 shadow-lg p-3">
@@ -217,7 +216,7 @@ function EventPage() {
                             ? (code !== null ? dataFilteredIn : data)?.map(x => (
                                 <span key={x.id} onClick={() => openPlateDeitals(x?.vehicle?.licenseNumber)}
                                       className="border-2 w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center">{x?.vehicle?.licenseNumber}</span>))
-                            : <span className="w-[47%] text-center items-center">Нет транспорта</span>}
+                            : <span className="w-full text-center items-center">Нет транспорта</span>}
                     </div>
                 </motion.div>
                 <motion.div
@@ -231,7 +230,7 @@ function EventPage() {
                     <div className="flex flex-wrap gap-4 mx-1">
                         {loading1 ? Array.from({length: 6}, (_, key) => (
                             <div key={key}
-                                 className="animate-pulse w-[31.5%]  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
+                                 className="animate-pulse lg:w-[31.5%] w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
                         )) : dataNew?.length > 0 ? (code !== null ? dataFilteredNew : dataNew)?.map(x =>
@@ -242,10 +241,10 @@ function EventPage() {
                                 openPlateDeitals(x.vehicle.licenseNumber)
                             }}
                             key={x.id}
-                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 w-[31.5%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center`}>
+                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 lg:w-[31.5%] w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center`}>
                             {x?.vehicle?.licenseNumber ?? "Неизвестно"}</span>
                                 </>
-                        ) : <span className="w-[31.5%]">Нет транспорта</span>}
+                        ) : <span className="w-full">Нет транспорта</span>}
                     </div>
                 </motion.div>
                 <motion.div

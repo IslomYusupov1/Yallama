@@ -59,8 +59,8 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
         }
     }, [selectedData])
     return (
-        <Dialog open={open} onOpenChange={close}>
-            <DialogContent className="max-w-none w-[550px]">
+        <Dialog open={open} onOpenChange={close} modal={false}>
+            <DialogContent className="max-w-none w-[550px] shadow-teal-100 border-2">
                 <DialogHeader className="border-b pb-2">
                     <DialogTitle>Добавление Сервиса</DialogTitle>
                     {/*<DialogDescription>*/}
