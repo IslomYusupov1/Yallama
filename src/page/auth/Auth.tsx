@@ -28,15 +28,14 @@ function Auth() {
             setLoading(false)
         })
     }
-    console.log(showPassword, "d")
     return (
         <div
             className="flex h-screen justify-center m-auto w-screen items-center align-middle text-center font-sans font-normal">
-            <div className="w-[500px] h-[500px] lg:block hidden"
+            <div className="w-[500px] h-[400px] lg:block hidden"
                  style={{boxShadow: "rgba(16, 24, 40, 0.03) 0px 8px 8px 8px, rgba(16, 24, 40, 0.08) 8px 20px 24px 8px"}}>
                 <img src={logo} alt="" className="w-full object-cover h-full"/>
             </div>
-            <div className="w-[500px] h-[500px] px-20 bg-white flex flex-col justify-center text-center"
+            <div className="w-[500px] h-[400px] lg:px-20 px-10 bg-white flex flex-col justify-center text-center"
                  style={{boxShadow: "rgba(16, 24, 40, 0.03) 0px 8px 8px 8px, rgba(16, 24, 40, 0.08) 8px 20px 24px 8px"}}>
                 <h3 className="text-black text-[25px]">Вход</h3>
                 <div className="bg-white rounded px-8 pt-6 pb-8 mb-4">
