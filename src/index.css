@@ -77,3 +77,9 @@
 .active {
   text-decoration: underline;
 }
+
+@media (max-width: 1020px) {
+  .bg-image-auth {
+    display: none;
+  }
+}
