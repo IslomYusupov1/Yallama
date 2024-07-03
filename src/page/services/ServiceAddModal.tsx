@@ -159,7 +159,7 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                 {/*</div>}*/}
                                 <DialogFooter className="mt-4">
                                     <button type="submit" disabled={loading}
-                                            className={`${loading && "opacity-50"} relative bg-red-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm`}>
+                                            className={`${loading && "opacity-50"} relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm`}>
                         <span className="mx-2">
                         {loading ? "Загрузка" : (selectedData?.id ? "Изменить" : "Создать")}
                         </span>

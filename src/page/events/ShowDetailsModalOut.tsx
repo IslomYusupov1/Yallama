@@ -1,32 +1,39 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {memo, useEffect, useMemo, useState} from "react";
-import {AccessLogsPromiseData, EventsStatusEnum, VehicleProps} from "@/api/events/EventsDTO";
+import {AccessLogsPromiseData, EventsStatusEnum, SessionPromiseData} from "@/api/events/EventsDTO";
 // import {useEventsApiContext} from "@/api/events/EventsContext";
 // import {useToast} from "@/components/ui/use-toast";
 import Select from "react-select";
 import {customStyles} from "@/page/events/service/ServiceModalAdd";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import {motion} from "framer-motion";
+import {useEventsApiContext} from "@/api/events/EventsContext";
+
+interface SelectProps {
+    label: string,
+    value: string,
+    info: AccessLogsPromiseData | Record<string, any>
+}
 
 interface Props {
     readonly open: boolean;
     readonly close: () => void;
     readonly data: AccessLogsPromiseData | Record<string, any>;
     readonly plate: { number: string, id: string }
-    readonly vehicles: VehicleProps[];
+    readonly vehicles: SessionPromiseData[];
     readonly outGate: (sessionId: string) => void;
     readonly loadingOpen: boolean;
 }
 
 export default memo(function ShowDetailsModalOut({open, close, data, vehicles, outGate, loadingOpen}: Props) {
-    // const {EventsApi} = useEventsApiContext();
+    const {EventsApi} = useEventsApiContext();
     // const { toast } = useToast()
     //
     // const [loading, setLoading] = useState<boolean>(false);
-    const [licenseNumber, setLicenseNumber] = useState<{ label: string, value: string, info: AccessLogsPromiseData | Record<string, any> } | any>({});
+    const [licenseNumber, setLicenseNumber] = useState<SelectProps | any>({});
     const vehiclesOptions = useMemo(() => {
-        const arr: { label: string, value: string, info: AccessLogsPromiseData | Record<string, any> }[] = [];
-        vehicles?.forEach((x) => arr?.push({label: x.licenseNumber, value: x.id, info: data}))
+        const arr: SelectProps[] = [];
+        vehicles?.forEach((x) => arr?.push({label: x?.vehicle?.licenseNumber, value: x?.vehicle?.id, info: x}))
         return arr;
     }, [vehicles])
 
@@ -34,8 +41,13 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
         if (vehicles?.length > 0) {
         setLicenseNumber({label: data?.vehicle?.licenseNumber, value: data?.vehicle?.id, info: data})
         }
-    }, [data]);
-
+    }, [data, vehicles]);
+    console.log(licenseNumber, "ff");
+    const selectToCompare = (data: SelectProps) => {
+        EventsApi.getAccessLogsDetails(data.label).then((res) => {
+            setLicenseNumber({ label: data?.label, value: data?.value, info: res})
+        })
+    }
     return (
         <>
             <Dialog open={open} onOpenChange={close}>
@@ -90,14 +102,14 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                                             <Select
                                                 className="w-full p-0"
                                                 value={{value: licenseNumber?.value, label: licenseNumber.label}}
-                                                onChange={(e: any) => setLicenseNumber(e)}
+                                                onChange={(e: any) => selectToCompare(e)}
                                                 options={vehiclesOptions}
                                                 styles={customStyles}/>
                                         </div>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-start opacity-50 text-[15px]">Статус: </span>
-                                        <p className="text-end text-[13px]">{licenseNumber?.info?.session?.status}</p>
+                                        <p className="text-end text-[13px]">{licenseNumber?.info?.session?.status ?? licenseNumber?.info?.status}</p>
                                     </div>
                                 </div>
                             </div>

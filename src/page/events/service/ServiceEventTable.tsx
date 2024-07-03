@@ -1,6 +1,5 @@
 import {EventSessionServicePromiseData} from "@/api/events/EventsDTO";
-import {CheckIcon} from "@radix-ui/react-icons"
-import {EditIcon, TrashIcon} from "lucide-react";
+import {EditIcon, TrashIcon, CheckCheckIcon, CheckIcon} from "lucide-react";
 import {memo, useMemo} from "react";
 import {useShallowEqualSelector} from "@/hooks/useShallowSelector";
 import {tokenSelector} from "@/reducers/AuthReducer";
@@ -13,10 +12,11 @@ interface Props {
     readonly tookFunc: (sessionId: string) => void;
     readonly openEdit: (value: EventSessionServicePromiseData) => void;
     readonly totalPrice: number;
+    readonly payedCheck: boolean;
     readonly loading?: boolean;
 }
 
-export default memo(function ServiceEventTable({data, deleteItem, totalPrice, tookFunc, openEdit}: Props) {
+export default memo(function ServiceEventTable({data, deleteItem, totalPrice, tookFunc, openEdit, payedCheck}: Props) {
     const token = useShallowEqualSelector(tokenSelector);
     const tokenInfo = token && (jwt_decode(token ? token : "") as any);
 
@@ -40,7 +40,7 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                     <th className="text-center py-1 px-2 border border-slate-300">Вес</th>
                     <th className="text-center py-1 px-2 border border-slate-300">Сумма</th>
                     <th className="text-center py-1 px-2 border border-slate-300">Услуга предоставлена</th>
-                    {tokenInfo?.role !== RolesEnum.ACCOUNTANT &&
+                    {tokenInfo?.role !== RolesEnum.ACCOUNTANT && payedCheck &&
                         <th className="text-center py-1 px-2 border border-slate-300">Действие</th>}
                 </tr>
                 </thead>
@@ -59,16 +59,20 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                     <td align="right" width={100}
                         className="py-1 px-2 border border-slate-300">{items?.totalPrice.toLocaleString("ru")}</td>
                     <td align="center" className="py-1 px-2 border border-slate-300">
-                        {items?.tookDate ? <CheckIcon className="bg-teal-500 text-white h-4 w-4"/> :
-                            <button disabled={tokenInfo?.role === RolesEnum.ACCOUNTANT}
-                                    className="bg-red-600 cursor-pointer px-2 py-1 rounded-sm text-white"
-                                    onClick={() => tookFunc(items?.id)}>Взять</button>}
+                        {items?.tookDate ? <CheckIcon className="bg-teal-500 py-1 cursor-not-allowed rounded-full w-[25px] h-[25px] text-white"/> :
+                            <CheckCheckIcon
+                                    className="bg-red-500 rounded-full py-1 cursor-pointer w-[25px] h-[25px] text-white"
+                                    onClick={() => {
+                                        if (tokenInfo?.role !== RolesEnum.ACCOUNTANT) {
+                                            tookFunc(items?.id)
+                                        }
+                                    }}>Взять</CheckCheckIcon>}
                     </td>
-                    {tokenInfo?.role !== RolesEnum.ACCOUNTANT &&
+                    {tokenInfo?.role !== RolesEnum.ACCOUNTANT && payedCheck &&
                         <td align="center" className="py-1 px-2 border border-slate-300">
                             <div className="flex justify-center gap-4">
-                                <EditIcon className="w-4 h-4 cursor-pointer" onClick={() => openEdit(items)}/>
-                                <TrashIcon className="w-4 h-4 cursor-pointer" onClick={() => deleteItem(items.id)}/>
+                                <EditIcon className="w-[20px] h-[20px] cursor-pointer" onClick={() => openEdit(items)}/>
+                                <TrashIcon className="w-[20px] h-[20px] cursor-pointer" onClick={() => deleteItem(items.id)}/>
                             </div>
                         </td>}
                 </tr>)}
@@ -93,7 +97,7 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                 <td align="right" width={120}
                     className="py-1 px-2 font-medium border border-slate-300">{totalPrice?.toLocaleString("ru")}</td>
                 <td align="center" className="py-1 px-2 border border-slate-300"/>
-                {tokenInfo?.role !== RolesEnum.ACCOUNTANT &&
+                {tokenInfo?.role !== RolesEnum.ACCOUNTANT && payedCheck &&
                     <td align="center" className="py-1 px-2 border border-slate-300"/>}
                 </tbody>
             </table>

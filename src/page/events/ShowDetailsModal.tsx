@@ -61,7 +61,7 @@ export default memo(function ShowDetailsModal({open, close, data, openGate, load
                     <div className="flex justify-between gap-4 w-full border-b pb-4">
                         <div className="w-1/2 z-50">
                             <motion.img
-                                whileHover={{ scale: 2, x: "200px", transition: { duration: 0.3, }}}
+                                whileHover={{ scale: 2, x: "200px", transition: { duration: 0.3, ease: "easeInOut" }}}
                                 width={300}
                                 height={300}
                                 className="object-cover bg-white"

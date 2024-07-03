@@ -80,7 +80,7 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
             <Dialog open={open} onOpenChange={close}>
                 <DialogContent className="max-w-none w-[550px]">
                     <DialogHeader className="border-b pb-2">
-                        <DialogTitle>Добавление Транспорта</DialogTitle>
+                        <DialogTitle>Добавление сервиса</DialogTitle>
                         {/*<DialogDescription>*/}
                         {/*    вся информация о транспорте.*/}
                         {/*</DialogDescription>*/}
@@ -90,7 +90,7 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                             {({handleSubmit, setFieldValue}) => (
                                 <Form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">Номер транспорта</label>
+                                        <label htmlFor="" className="">Название</label>
                                         <Select className="" options={selectServiceOptions} value={selectedValue} styles={customStyles}
                                                 onChange={(e: any) => {setSelectedValue(e)}}/>
                                         <SearchIcon className="absolute bg-white right-12 top-8 cursor-pointer"  onClick={() => setSearch(true)} />
@@ -117,9 +117,9 @@ function ServiceModalAdd({open, close, loading, createService, selectServiceOpti
                                     </div>}
                                     <DialogFooter className="mt-4">
                                         <button type="submit" disabled={loading}
-                                                className={`${loading && "opacity-50"} relative bg-red-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm`}>
+                                                className={`${loading && "opacity-50"} relative bg-teal-500 flex items-center text-[14px] text-white py-2 px-8 rounded-sm`}>
                         <span className="mx-2">
-                        {loading ? "Загрузка" : (selectedData?.id ? "Изменить" : "Создать")}
+                        {loading ? "Загрузка" : (selectedData?.id ? "Изменить" : "Добавить")}
                         </span>
                                             {loading && <ReloadIcon className="absolute right-3 h-4 w-4 animate-spin"/>}
                                         </button>

@@ -80,7 +80,7 @@ export class EventsApi extends BaseApi {
   public createFile(json: { path: string; name: string }) {
     return this.post(`files`, { json: json })
   }
-  public checkCustom(accessLogId: string): Promise<any> {
-    return this.get(`access-logs/${accessLogId}/customuz`)
+  public checkCustom(sessionId: string): Promise<any> {
+    return this.get(`sessions/${sessionId}/customuz`)
   }
 }

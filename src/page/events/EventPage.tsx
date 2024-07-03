@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useEventsApiContext} from "@/api/events/EventsContext";
-import {AccessLogsPromiseData, EventsStatusEnum, SessionPromiseData, VehicleProps} from "@/api/events/EventsDTO";
+import {AccessLogsPromiseData, EventsStatusEnum, SessionPromiseData} from "@/api/events/EventsDTO";
 import {useIsMountHook} from "@/hooks/useIsMountHook";
 import ShowDetailsModal from "@/page/events/ShowDetailsModal";
 import {motion} from "framer-motion";
@@ -20,7 +20,6 @@ function EventPage() {
     const [data, setData] = useState<AccessLogsPromiseData[] | []>([]);
     const [dataOut, setDataOut] = useState<AccessLogsPromiseData[] | []>([]);
     const [dataNew, setDataNew] = useState<SessionPromiseData[] | []>([]);
-    const [vehicles, setVehicles] = useState<VehicleProps[]>([]);
     const [open, setOpen] = useState(false);
     const [openOut, setOpenOut] = useState(false);
     const [loadingDetails, setLoadingDetails] = useState(false);
@@ -42,7 +41,7 @@ function EventPage() {
             setLoading(false)
             toast({
                 title: error.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
         })
     }
@@ -57,7 +56,7 @@ function EventPage() {
             setLoading2(false)
             toast({
                 title: error.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
         })
     }
@@ -72,16 +71,16 @@ function EventPage() {
             setLoading1(false)
             toast({
                 title: error.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
         })
     }
 
-    const getSessions = () => {
-        EventsApi.getVehicles(EventsStatusEnum.IN_PROGRESS).then(res => {
-            setVehicles(res.data)
-        })
-    }
+    // const getSessions = () => {
+    //     EventsApi.getVehicles(EventsStatusEnum.IN_PROGRESS).then(res => {
+    //         setVehicles(res.data)
+    //     })
+    // }
     const openPlateDeitals = (id: string) => {
         setLoadingDetails(true);
         EventsApi.getAccessLogsDetails(id).then((res) => {
@@ -92,14 +91,14 @@ function EventPage() {
                 //     setOpenOut(true);
                 // }
                 setOpenOut(true);
-                getSessions()
+                getAllSessions();
                 setPlateDetails(res)
                 setLoadingDetails(false)
             }
         }).catch((error) => {
             toast({
                 title: error.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
             setLoadingDetails(false)
         })
@@ -121,7 +120,7 @@ function EventPage() {
             setLoadingOpen(false)
             toast({
                 title: error?.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
         })
     }, [])
@@ -141,7 +140,7 @@ function EventPage() {
             setLoadingOpen(false)
             toast({
                 title: error?.data,
-                // description: "Friday, February 10, 2023 at 5:57 PM",
+                description: "error",
             })
         })
     }, [])
@@ -158,26 +157,26 @@ function EventPage() {
     const dataFilteredIn = useMemo(() => {
         const arr = []
          if (code !== null) {
-            arr.push(...data?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.split("").some(char => code?.toLowerCase()?.includes(char))))
+             arr.push(...data?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.includes(code?.toLowerCase())))
          }
          return arr;
     }, [code, data]);
     const dataFilteredOut = useMemo(() => {
         const arr = []
         if (code !== null) {
-            arr.push(...dataOut?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.split("").some(char => code?.toLowerCase()?.includes(char))))
+            arr.push(...dataOut?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.includes(code?.toLowerCase())))
         }
         return arr;
     }, [code, data]);
     const dataFilteredNew = useMemo(() => {
         const arr = []
         if (code !== null) {
-            arr.push(...dataNew?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.split("").some(char => code?.toLowerCase()?.includes(char))))
+            arr.push(...dataNew?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.includes(code?.toLowerCase())))
         }
         return arr;
     }, [code, dataNew]);
     useEffect(() => {
-        // EventsApi.createFile({ name: "ANPR-01M008298-camera_out-20240620130612345.jpg", path: "ANPR-01M008298-camera_out-20240620130612345.jpg" }).then(res => {
+        // EventsApi.createFile({ name: "ANPR-01G715LB-camera_out-20240504154633845.jpg", path: "ANPR-01G715LB-camera_out-20240504154633845.jpg" }).then(res => {
         //     console.log(res, "res")
         // })
         getAccessLogsIn();
@@ -192,7 +191,7 @@ function EventPage() {
         <div className="flex flex-col overflow-hidden">
             <div className="mt-4 gap-16 w-full flex justify-between">
                 <button
-                    className="relative bg-red-500 flex items-center text-[14px] text-white py-2 px-8 rounded-l">Список
+                    className="relative opacity-0 bg-red-500 flex items-center text-[14px] text-white py-2 px-8 rounded-l">Список
                 </button>
                 <input value={code ?? ""} onChange={(event) => onChangeSearchKey(event.target.value)}
                        placeholder="Поиск"
@@ -208,17 +207,17 @@ function EventPage() {
                     transition={{duration: 0.3, ease: "easeIn"}}
                     className="flex flex-col min-h-[100px] w-1/4 shadow-lg p-3">
                     <h3 className="font-medium  text-[17px] mb-2">Вход</h3>
-                    <div className="flex flex-wrap gap-4 mx-1">
+                    <div className="flex flex-wrap gap-4">
                         {loading ? Array.from({length: 4}, (_, key) => (
                             <div key={key}
-                                 className="animate-pulse  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
+                                 className="animate-pulse w-[47%]  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
                         )) : data?.filter((x) => x?.session?.status === EventsStatusEnum.NEW)?.length > 0
                             ? (code !== null ? dataFilteredIn : data)?.map(x => (
                                 <span key={x.id} onClick={() => openPlateDeitals(x?.vehicle?.licenseNumber)}
-                                      className="border-2 cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">{x?.vehicle?.licenseNumber}</span>))
-                            : <span>Нет транспорта</span>}
+                                      className="border-2 w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center">{x?.vehicle?.licenseNumber}</span>))
+                            : <span className="w-[47%] text-center items-center">Нет транспорта</span>}
                     </div>
                 </motion.div>
                 <motion.div
@@ -232,7 +231,7 @@ function EventPage() {
                     <div className="flex flex-wrap gap-4 mx-1">
                         {loading1 ? Array.from({length: 6}, (_, key) => (
                             <div key={key}
-                                 className="animate-pulse  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
+                                 className="animate-pulse w-[31.5%]  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
                         )) : dataNew?.length > 0 ? (code !== null ? dataFilteredNew : dataNew)?.map(x =>
@@ -243,10 +242,10 @@ function EventPage() {
                                 openPlateDeitals(x.vehicle.licenseNumber)
                             }}
                             key={x.id}
-                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3`}>
+                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 w-[31.5%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center`}>
                             {x?.vehicle?.licenseNumber ?? "Неизвестно"}</span>
                                 </>
-                        ) : <span>Нет транспорта</span>}
+                        ) : <span className="w-[31.5%]">Нет транспорта</span>}
                     </div>
                 </motion.div>
                 <motion.div
@@ -281,7 +280,7 @@ function EventPage() {
                 <ShowDetailsModal loadingOpen={loadingOpen} data={plateDetails} open={open} close={closeModal}
                                   openGate={openGate}/>
                 <ShowDetailsModalOut outGate={outGate} plate={plate} data={plateDetails} loadingOpen={loadingOpen}
-                                     open={openOut} close={() => setOpenOut(false)} vehicles={vehicles}/>
+                                     open={openOut} close={() => setOpenOut(false)} vehicles={dataNew}/>
                 {/*<AddModal open={openAdd} close={closeAddModal} setNewData={setNewData} />*/}
             </div>
 
