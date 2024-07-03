@@ -32,7 +32,7 @@ function Auth() {
     return (
         <div
             className="flex h-screen justify-center m-auto w-screen items-center align-middle text-center font-sans font-normal">
-            <div className="w-[500px] h-[500px] bg-image-auth"
+            <div className="w-[500px] h-[500px] lg:block hidden"
                  style={{boxShadow: "rgba(16, 24, 40, 0.03) 0px 8px 8px 8px, rgba(16, 24, 40, 0.08) 8px 20px 24px 8px"}}>
                 <img src={logo} alt="" className="w-full object-cover h-full"/>
             </div>
