@@ -43,7 +43,7 @@ export default memo(function ShowDetailsModal({open, close, data, openGate, load
             <Dialog open={open} onOpenChange={close} modal={false}>
                 {open && <div className="fixed top-0 left-0 w-screen h-screen"
                               style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
-                <DialogContent className="max-w-[800px]">
+                <DialogContent className="lg:max-w-[800px] max-w-[700px]">
                     <DialogHeader className="border-b pb-2">
                         <div className="flex text-center items-center justify-between mx-4">
                             <DialogTitle>О транспорте</DialogTitle>

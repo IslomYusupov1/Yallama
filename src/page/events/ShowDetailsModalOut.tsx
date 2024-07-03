@@ -53,7 +53,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
             <Dialog open={open} onOpenChange={close} modal={false}>
                 {open && <div className="fixed top-0 left-0 w-screen h-screen"
                       style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
-                <DialogContent className="max-w-none max-w-[800px] h-[400px]">
+                <DialogContent className="max-w-none lg:max-w-[800px] h-[400px] max-w-[700px]">
                     <DialogHeader className="border-b pb-2">
                         <div className="flex justify-between text-center items-center mx-7">
                             <DialogTitle>О транспорте</DialogTitle>
@@ -71,7 +71,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                     <div className="flex gap-1">
                         <div className="w-1/2 border-r mx-1">
                             <div className="flex w-full flex-col pb-4">
-                                <div className="gap-2 z-50 w-[350px] h-[210px] border-2">
+                                <div className="gap-2 z-50 w-[100%] border-2">
                                     <motion.img
                                         className="object-cover bg-white w-full h-full"
                                         src={data?.file?.url}
@@ -91,7 +91,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                         </div>
                         <div className="w-1/2">
                             <div className="flex w-full flex-col pb-4">
-                                <div className="z-50 w-[350px] h-[210px] border-2">
+                                <div className="z-50 w-[100%] border-2">
                                     <motion.img
                                         className="object-cover bg-white "
                                         src={licenseNumber?.info?.file?.url}
