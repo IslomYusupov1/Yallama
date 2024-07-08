@@ -83,14 +83,35 @@ function EventPage() {
     // }
     const openPlateDeitals = (id: string) => {
         setLoadingDetails(true);
-        EventsApi.getAccessLogsDetails(id).then((res) => {
+        EventsApi.getAccessLogsDetailsNew(id).then((res) => {
             if (res.id) {
-                // if (res?.direction === "IN") {
-                //     setOpen(true);
-                // } else {
-                //     setOpenOut(true);
-                // }
-                setOpen(true);
+                if (res?.direction === "IN") {
+                    setOpen(true);
+                } else {
+                    setOpenOut(true);
+                }
+                getAllSessions();
+                setPlateDetails(res)
+                setLoadingDetails(false)
+            }
+        }).catch((error) => {
+            toast({
+                title: error.data,
+                description: "error",
+            })
+            setLoadingDetails(false)
+        })
+    }
+    const openPlateDeitalsProgress = (data: any) => {
+        setLoadingDetails(true);
+        const filteredId = data?.find((x: {id: string, gate: {key: string}}) => x?.gate?.key === "camera_in")
+        EventsApi.getAccessLogsDetailsNew(filteredId?.id ?? "").then((res) => {
+            if (res.id) {
+                if (res?.direction === "IN") {
+                    setOpen(true);
+                } else {
+                    setOpenOut(true);
+                }
                 getAllSessions();
                 setPlateDetails(res)
                 setLoadingDetails(false)
@@ -124,9 +145,9 @@ function EventPage() {
             })
         })
     }, [])
-    const outGate = useCallback((sessionId: string) => {
+    const outGate = useCallback((sessionId: string, accessLogId: string) => {
         setLoadingOpen(true);
-        EventsApi.outGate(sessionId).then(() => {
+        EventsApi.outGate({ accessLogId: accessLogId}, sessionId).then(() => {
             getAccessLogsOut();
             getAccessLogsIn();
             getAllSessions();
@@ -176,7 +197,7 @@ function EventPage() {
         return arr;
     }, [code, dataNew]);
     useEffect(() => {
-        // EventsApi.createFile({ name: "ANPR-01G715LB-camera_out-20240504154633845.jpg", path: "ANPR-01G715LB-camera_out-20240504154633845.jpg" }).then(res => {
+        // EventsApi.createFile({ name: "ANPR-10618UBA-camera_out-20240504165142953.jpg", path: "ANPR-10618UBA-camera_out-20240504165142953.jpg" }).then(res => {
         //     console.log(res, "res")
         // })
         getAccessLogsIn();
@@ -209,13 +230,13 @@ function EventPage() {
                     <div className="flex flex-wrap gap-4">
                         {loading ? Array.from({length: 4}, (_, key) => (
                             <div key={key}
-                                 className="animate-pulse w-[47%]  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
+                                 className="animate-pulse lg:w-[47%] w-[98%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
                         )) : data?.filter((x) => x?.session?.status === EventsStatusEnum.NEW)?.length > 0
                             ? (code !== null ? dataFilteredIn : data)?.map(x => (
-                                <span key={x.id} onClick={() => openPlateDeitals(x?.vehicle?.licenseNumber)}
-                                      className="border-2 w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center">{x?.vehicle?.licenseNumber}</span>))
+                                <span key={x.id} onClick={() => openPlateDeitals(x?.id)}
+                                      className="border-2 lg:w-[47%] w-[98%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center">{x?.vehicle?.licenseNumber}</span>))
                             : <span className="w-full text-center items-center">Нет транспорта</span>}
                     </div>
                 </motion.div>
@@ -233,12 +254,12 @@ function EventPage() {
                                  className="animate-pulse lg:w-[31.5%] w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
-                        )) : dataNew?.length > 0 ? (code !== null ? dataFilteredNew : dataNew)?.map(x =>
+                        )) : dataNew?.length > 0 ? (code !== null ? dataFilteredNew : dataNew)?.map((x: any) =>
                                 <>
                         <span
                             onClick={() => {
                                 setId({id: x.id, number: x.vehicle?.licenseNumber})
-                                openPlateDeitals(x.vehicle.licenseNumber)
+                                openPlateDeitalsProgress(x.accessLogs)
                             }}
                             key={x.id}
                             className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 lg:w-[31.5%] w-[47%] cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 text-center items-center`}>
@@ -259,7 +280,7 @@ function EventPage() {
                     <div className="flex flex-wrap gap-4 mx-1">
                         {loading2 ? Array.from({length: 4}, (_, key) => (
                             <div key={key}
-                                 className="animate-pulse  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
+                                 className="animate-pulse lg:w-[47%] w-[98%]  cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3">
                                 <span className="opacity-0">01h434hh</span>
                             </div>
                         )) : (code !== null ? dataFilteredOut : dataOut)?.map(x =>
@@ -267,10 +288,10 @@ function EventPage() {
                         <span
                             onClick={() => {
                                 setId({id: x.id, number: x.vehicle.licenseNumber})
-                                openPlateDeitals(x.vehicle?.licenseNumber)
+                                openPlateDeitals(x.id)
                             }}
                             key={x.id}
-                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} border-2 cursor-pointer font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3`}>
+                            className={`${loadingDetails && plate?.id === x.id && "animate-pulse"} lg:w-[47%] w-[98%] border-2 cursor-pointer text-center items-center font-semibold bg-[#e6e6e6] border-black rounded-xl py-2 px-3`}>
                             {x.vehicle?.licenseNumber}</span>
                                 </>
                         )}

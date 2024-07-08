@@ -21,7 +21,7 @@ interface Props {
     readonly data: AccessLogsPromiseData | Record<string, any>;
     readonly plate: { number: string, id: string }
     readonly vehicles: SessionPromiseData[];
-    readonly outGate: (sessionId: string) => void;
+    readonly outGate: (sessionId: string, accessLogId: string) => void;
     readonly loadingOpen: boolean;
 }
 
@@ -37,17 +37,19 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
         return arr;
     }, [vehicles])
 
-    useEffect(() => {
-        if (vehicles?.length > 0) {
-        setLicenseNumber({label: data?.vehicle?.licenseNumber, value: data?.vehicle?.id, info: data})
-        }
-    }, [data, vehicles]);
-    console.log(licenseNumber, "ff");
     const selectToCompare = (data: SelectProps) => {
-        EventsApi.getAccessLogsDetails(data.label).then((res) => {
+        const filteredId = data?.info?.accessLogs?.find((x: {id: string, gate: {key: string}}) => x?.gate?.key === "camera_in");
+        EventsApi.getAccessLogsDetailsNew(filteredId?.id ?? "").then((res) => {
             setLicenseNumber({ label: data?.label, value: data?.value, info: res})
         })
     }
+
+    useEffect(() => {
+        return () => {
+            setLicenseNumber({})
+        }
+    }, [])
+
     return (
         <>
             <Dialog open={open} onOpenChange={close} modal={false}>
@@ -58,7 +60,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                         <div className="flex justify-between text-center items-center mx-7">
                             <DialogTitle>О транспорте</DialogTitle>
                             {licenseNumber?.info?.session?.status === EventsStatusEnum.IN_PROGRESS &&
-                                <button type="submit" onClick={() => outGate(licenseNumber?.info?.session?.id)}
+                                <button type="submit" onClick={() => outGate(licenseNumber?.info?.session?.id, data?.id)}
                                         className={`${loadingOpen && "opacity-50"} outline-0 flex relative w-[150px] bg-teal-500 text-[14px] text-white py-2 px-8 rounded-l`}>
                             <span className="text-center items-center w-full">
                               {loadingOpen ? "Загрузка..." : "Выход"}
@@ -71,7 +73,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                     <div className="flex gap-1">
                         <div className="w-1/2 border-r mx-1">
                             <div className="flex w-full flex-col pb-4">
-                                <div className="gap-2 z-50 w-[100%] border-2">
+                                <div className="z-50 lg:w-[350px] w-[300px] h-[210px] border-2">
                                     <motion.img
                                         className="object-cover bg-white w-full h-full"
                                         src={data?.file?.url}
@@ -91,9 +93,9 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                         </div>
                         <div className="w-1/2">
                             <div className="flex w-full flex-col pb-4">
-                                <div className="z-50 w-[100%] border-2">
+                                <div className="z-50 lg:w-[350px] w-[300px] h-[210px] border-2">
                                     <motion.img
-                                        className="object-cover bg-white "
+                                        className="object-cover bg-white w-full h-full"
                                         src={licenseNumber?.info?.file?.url}
                                         alt="Фото транспорта"/>
                                 </div>
@@ -102,7 +104,7 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                                         <span className="text-start opacity-50 text-[15px]">Номер: </span>
                                         <div className="text-[12px]">
                                             <Select
-                                                className="w-full p-0"
+                                                className="p-0 w-[150px]"
                                                 value={{value: licenseNumber?.value, label: licenseNumber.label}}
                                                 onChange={(e: any) => selectToCompare(e)}
                                                 options={vehiclesOptions}

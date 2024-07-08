@@ -17,6 +17,9 @@ export class EventsApi extends BaseApi {
   public getAccessLogsDetails(licenseNumber: string): Promise<AccessLogsPromiseData> {
     return this.get(`access-logs/vehicle/${licenseNumber}`);
   }
+  public getAccessLogsDetailsNew(id: string): Promise<AccessLogsPromiseData> {
+    return this.get(`access-logs/${id}`);
+  }
   public changeLicenseNumber(id: string, licenseNumber: string) {
     return this.patch(`access-logs/${id}/vehicle`, { json: { licenseNumber: licenseNumber } });
   }
@@ -74,8 +77,8 @@ export class EventsApi extends BaseApi {
   public openGate(id: string) {
     return this.patch(`sessions/${id}/gate-in-open?filter[session][status]=NEW`)
   }
-  public outGate(id: string) {
-    return this.patch(`sessions/${id}/gate-out-open?filter[session][status]=NEW`)
+  public outGate(json: { accessLogId: string }, id: string) {
+    return this.patch(`sessions/${id}/gate-out-open?filter[session][status]=NEW`, { json: json })
   }
   public createFile(json: { path: string; name: string }) {
     return this.post(`files`, { json: json })

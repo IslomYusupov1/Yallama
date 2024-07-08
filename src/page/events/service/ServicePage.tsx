@@ -205,7 +205,6 @@ function ServicePage() {
             setLoadingCheck(false)
         })
     }
-    console.log(customData, "c")
     useEffect(() => {
         if (open) {
             EventsApi.getAllServices(100).then((res) => {
@@ -277,8 +276,8 @@ function ServicePage() {
                     </div>}
             </div>
             {customData?.resultnote && !loadingCheck &&
-                <div className="border-2 rounded-xl mt-5 px-5 py-2 border-teal-500 shadow-orange-100">
-                    <h3 className="text-[25px] font-normal">Результат проверки задолжности:</h3>
+                <div className={`border-2 rounded-xl mt-5 px-5 py-2 ${customData?.resultcode !== "1" ? "border-orange-500" : "border-teal-500"} shadow-orange-100`}>
+                    <h3 className="text-[25px] font-normal">Результат проверки задолжености:</h3>
                     <div className="mx-10">
                         <div className="flex text-[17px] mt-2 gap-2 mb-3">
                             <span>Примечание: </span>
@@ -303,6 +302,14 @@ function ServicePage() {
                         }
                     </div>
                 </div>}
+            {customData?.resultnote && !loadingCheck && <div className={`border-2 rounded-xl mt-5 px-5 py-2 ${payedCheck ? "border-red-500" : "border-green-500"} shadow-orange-100`}>
+                <h3 className="text-[25px] font-normal">Результат проверки задолжености по услугам:</h3>
+                <div className="mx-10">
+                    <div className="flex text-[17px] mt-2 gap-2 mb-3">
+                        <h3>{!payedCheck ? "Нет задолженности" : "Есть задолженность"}</h3>
+                    </div>
+                </div>
+            </div>}
             <ServiceModalAdd selectedData={selectedData} editService={editService} open={open} serviceData={services}
                              selectServiceOptions={selectServiceOptions} close={closeFunc} createService={addService}
                              loading={loadingCreate}/>

@@ -1,10 +1,11 @@
 import {EventSessionServicePromiseData} from "@/api/events/EventsDTO";
-import {EditIcon, TrashIcon, CheckCheckIcon, CheckIcon} from "lucide-react";
-import {memo, useMemo} from "react";
+import {EditIcon, TrashIcon, CheckIcon} from "lucide-react";
+import {memo, useMemo, useState} from "react";
 import {useShallowEqualSelector} from "@/hooks/useShallowSelector";
 import {tokenSelector} from "@/reducers/AuthReducer";
 import jwt_decode from "jwt-decode";
 import {RolesEnum} from "@/api/MainDTO";
+import {Dialog, DialogContent} from "@/components/ui/dialog";
 
 interface Props {
     readonly data: EventSessionServicePromiseData[];
@@ -19,6 +20,7 @@ interface Props {
 export default memo(function ServiceEventTable({data, deleteItem, totalPrice, tookFunc, openEdit, payedCheck}: Props) {
     const token = useShallowEqualSelector(tokenSelector);
     const tokenInfo = token && (jwt_decode(token ? token : "") as any);
+    const [id, setId] = useState("");
 
     const unPaidAmount = useMemo(() =>
             data?.filter(x => !x.isPaid).reduce(
@@ -60,13 +62,13 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                         className="py-1 px-2 border border-slate-300">{items?.totalPrice.toLocaleString("ru")}</td>
                     <td align="center" className="py-1 px-2 border border-slate-300">
                         {items?.tookDate ? <CheckIcon className="bg-teal-500 py-1 cursor-not-allowed rounded-full w-[25px] h-[25px] text-white"/> :
-                            <CheckCheckIcon
-                                    className="bg-red-500 rounded-full py-1 cursor-pointer w-[25px] h-[25px] text-white"
+                            <button
+                                    className="bg-teal-500 rounded-sm p-y-1 px-2 text-white"
                                     onClick={() => {
                                         if (tokenInfo?.role !== RolesEnum.ACCOUNTANT) {
-                                            tookFunc(items?.id)
+                                            setId(items?.id)
                                         }
-                                    }}>Взять</CheckCheckIcon>}
+                                    }}>Получить услугу</button>}
                     </td>
                     {tokenInfo?.role !== RolesEnum.ACCOUNTANT && payedCheck &&
                         <td align="center" className="py-1 px-2 border border-slate-300">
@@ -101,7 +103,23 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                     <td align="center" className="py-1 px-2 border border-slate-300"/>}
                 </tbody>
             </table>
+            <Dialog open={id.length > 0} onOpenChange={() => setId("")} modal={false}>
+                {id?.length > 0 && <div className="fixed top-0 left-0 w-screen h-screen"
+                              style={{background: "rgba(0, 0, 0, 0.4)", zIndex: "1"}}/>}
+                <DialogContent className="max-w-none w-[550px]">
+                    <div className="flex justify-center flex-col">
+                        <h3 className="text-[20px] text-center">Вы действительно хотите получить услугу?</h3>
+                        <div className="flex justify-evenly mt-5 gap-4">
+                            <button className="bg-red-500 text-white rounded-sm py-2 w-full" onClick={() => setId("")}>Нет</button>
+                            <button className="bg-teal-500 text-white rounded-sm py-2 w-full" onClick={() => {
+                                tookFunc(id);
+                                setId("")
+                            }}>Да</button>
+                        </div>
+                    </div>
 
+                </DialogContent>
+            </Dialog>
         </>
     );
 })

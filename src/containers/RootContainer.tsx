@@ -25,7 +25,6 @@ function RootContainer() {
     const dispatch = useDispatch()
     const tokenInfo = token && (jwt_decode(token ? token : "") as any);
     const isAuthorized = useMemo(() => Boolean(token), [token]);
-    console.log(tokenInfo, "t")
     useEffect(() => {
         if(!isAuthorized) {
             dispatch(resetToken());

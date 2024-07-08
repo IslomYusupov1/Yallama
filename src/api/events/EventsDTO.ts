@@ -13,6 +13,7 @@ export interface AccessLogsPromiseData {
     readonly direction: string;
     readonly file: FileProps
     readonly session: SessionProps;
+    readonly accessLogs: any;
     readonly gate: {
         readonly id: string;
         readonly key: string;

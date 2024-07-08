@@ -85,7 +85,7 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                 </div>
                                 <div className="w-full flex gap-2">
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">UnitTime</label>
+                                        <label htmlFor="" className="">Единица измерения (время)</label>
                                         <Field name="unitTime">
                                             {({ form, field }: any) => (
                                                 <Select
@@ -97,7 +97,7 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                         </Field>
                                     </div>
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">UnitItem </label>
+                                        <label htmlFor="" className="">Единица измерения (штук) </label>
                                         <Field name="unitItem">
                                             {({ form, field }: any) => (
                                                 <Select
@@ -112,7 +112,7 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                 </div>
                                 <div className="w-full flex gap-2">
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">UnitVolume</label>
+                                        <label htmlFor="" className="">Единица измерения (обьем)</label>
                                         <Field name="unitVolume">
                                             {({ form, field }: any) => (
                                                 <Select
@@ -125,7 +125,7 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                         </Field>
                                     </div>
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">UnitWeight</label>
+                                        <label htmlFor="" className="">Единица измерения (вес)</label>
                                         <Field name="unitWeight">
                                             {({ form, field }: any) => (
                                                 <Select
@@ -140,14 +140,14 @@ function ServiceAddModal({ open, close, loading, selectedData, editService, crea
                                 </div>
                                 <div className="w-full flex gap-2">
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">priority</label>
+                                        <label htmlFor="" className="">Порядок отображения</label>
                                         <Field
                                             name="priority"
                                             type="number"
                                             className="appearance-none bg-white border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"/>
                                     </div>
                                     <div className="w-full relative">
-                                        <label htmlFor="" className="">price</label>
+                                        <label htmlFor="" className="">Цена</label>
                                         <Field
                                             name="price"
                                             type="number"
