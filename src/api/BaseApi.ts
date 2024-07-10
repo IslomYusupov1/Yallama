@@ -67,9 +67,9 @@ export class BaseApi {
         // ],
         afterResponse: [
           ...(hooks?.afterResponse || []),
-          async (_, options, response) => {
-            if (response.status === 401 && this.reGetToken) {
-              this.reGetToken(options);
+          async (_,__, response) => {
+            if (response.status === 401 && this.logout) {
+              this.logout();
             }
           },
         ],
