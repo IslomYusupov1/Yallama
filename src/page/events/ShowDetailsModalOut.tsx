@@ -8,6 +8,7 @@ import {customStyles} from "@/page/events/service/ServiceModalAdd";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import {motion} from "framer-motion";
 import {useEventsApiContext} from "@/api/events/EventsContext";
+import noImage from "@/assets/noImage.svg";
 
 interface SelectProps {
     label: string,
@@ -44,11 +45,16 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
         })
     }
 
+    // const openCheck = useMemo(() => data?>)
+
     useEffect(() => {
+        if (!open) {
+            setLicenseNumber({})
+        }
         return () => {
             setLicenseNumber({})
         }
-    }, [])
+    }, [open])
 
     return (
         <>
@@ -95,8 +101,8 @@ export default memo(function ShowDetailsModalOut({open, close, data, vehicles, o
                             <div className="flex w-full flex-col pb-4">
                                 <div className="z-50 lg:w-[350px] w-[300px] h-[210px] border-2">
                                     <motion.img
-                                        className="object-cover bg-white w-full h-full"
-                                        src={licenseNumber?.info?.file?.url}
+                                        className="object-contain bg-white w-full h-full"
+                                        src={licenseNumber?.info?.file?.url ?? noImage}
                                         alt="Фото транспорта"/>
                                 </div>
                                 <div className="flex flex-col w-11/12 gap-2 mt-2 z-40">

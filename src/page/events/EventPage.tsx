@@ -188,7 +188,7 @@ function EventPage() {
             arr.push(...dataOut?.filter(item => item?.vehicle?.licenseNumber?.toLowerCase()?.includes(code?.toLowerCase())))
         }
         return arr;
-    }, [code, data]);
+    }, [code, dataOut]);
     const dataFilteredNew = useMemo(() => {
         const arr = []
         if (code !== null) {
@@ -197,7 +197,7 @@ function EventPage() {
         return arr;
     }, [code, dataNew]);
     useEffect(() => {
-        // EventsApi.createFile({ name: "ANPR-10618UBA-camera_out-20240504165142953.jpg", path: "ANPR-10618UBA-camera_out-20240504165142953.jpg" }).then(res => {
+        // EventsApi.createFile({ name: "ANPR-797AWN02-camera_out-20240620130612833.jpg", path: "ANPR-10618UBA-camera_out-20240504165142953.jpg" }).then(res => {
         //     console.log(res, "res")
         // })
         getAccessLogsIn();
@@ -207,7 +207,6 @@ function EventPage() {
     useEffect(() => {
         getAllSessions()
     }, []);
-
     return (
         <div className="flex flex-col overflow-hidden">
             <div className="mt-4 gap-16 w-full flex justify-between">
