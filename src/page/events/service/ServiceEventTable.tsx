@@ -82,7 +82,7 @@ export default memo(function ServiceEventTable({data, deleteItem, totalPrice, to
                 <tbody className="lg:text-[15px] text-[14px]">
                 <td align="left" className="py-1 px-2 border border-slate-300">
                     <div className="flex justify-between">
-                        <span className="font-medium">Общая количество: </span>
+                        <span className="font-medium">Всего: </span>
                         <span className="font-medium">{data?.length}</span>
                     </div>
                 </td>
